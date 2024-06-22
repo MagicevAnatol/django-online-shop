@@ -22,3 +22,18 @@ class UserSignUpSerializer(serializers.ModelSerializer):
             full_name=validated_data['name']
         )
         return user
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ['full_name', 'email', 'phone', 'avatar_src', 'avatar_alt']
+
+
+class UserSerializer(serializers.ModelSerializer):
+    profile = UserProfileSerializer()
+
+    class Meta:
+        model = User
+        fields = ['username', 'profile']
+

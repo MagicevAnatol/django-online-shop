@@ -1,10 +1,10 @@
 import json
 
-from django.contrib.auth import authenticate, login, logout
-from rest_framework import status
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from rest_framework import status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import UserSignUpSerializer
+from .serializers import UserSignUpSerializer, UserSerializer, UserProfileSerializer
 
 
 class SignUpView(APIView):
@@ -47,3 +47,49 @@ class SignOutView(APIView):
     def post(self, request):
         logout(request)
         return Response({"message": "User signed out successfully"}, status=status.HTTP_200_OK)
+
+
+class UserProfileView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        serializer = UserSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        user = request.user
+        profile_data = request.data.get('profile', {})
+        serializer = UserProfileSerializer(instance=user.profile, data=profile_data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PasswordChangeView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+        current_password = request.data['currentPassword']
+        new_password = request.data['newPassword']
+        if not user.check_password(current_password):
+            return Response({"currentPassword": "Wrong password."}, status=status.HTTP_400_BAD_REQUEST)
+        user.set_password(new_password)
+        user.save()
+        update_session_auth_hash(request, user)
+        return Response({"message": "Password updated successfully"}, status=status.HTTP_200_OK)
+
+
+class AvatarUpdateView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+        avatar = request.FILES.get('avatar')
+        if avatar:
+            user.profile.avatar_src = avatar
+            user.profile.save()
+            return Response({"message": "Avatar updated successfully"}, status=status.HTTP_200_OK)
+        return Response({"error": "No avatar file provided"}, status=status.HTTP_400_BAD_REQUEST)
