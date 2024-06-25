@@ -104,7 +104,7 @@ class Product(models.Model):
 
     def update_rating(self):
         average_rating = self.reviews.aggregate(Avg('rate'))['rate__avg']
-        self.rating = average_rating if average_rating is not None else 0
+        self.rating = round(average_rating, 2) if average_rating is not None else 0
         self.save()
 
     def __str__(self):
