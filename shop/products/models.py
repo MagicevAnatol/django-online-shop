@@ -7,6 +7,22 @@ class Category(models.Model):
         verbose_name_plural = "Categories"
 
     name = models.CharField(max_length=255)
+    image_src = models.ImageField(upload_to='categories/', default='default.jpg')
+    image_alt = models.CharField(max_length=255, default='Default alt text')
+
+    def __str__(self):
+        return self.name
+
+
+class Subcategory(models.Model):
+    class Meta:
+        verbose_name = "Subcategory"
+        verbose_name_plural = "Subcategories"
+
+    category = models.ForeignKey(Category, related_name='subcategories', on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    image_src = models.ImageField(upload_to='subcategories/', default='default.jpg')
+    image_alt = models.CharField(max_length=255, default='Default alt text')
 
     def __str__(self):
         return self.name
@@ -58,6 +74,8 @@ class Product(models.Model):
         verbose_name_plural = "Products"
 
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    subcategory = models.ForeignKey(Subcategory, related_name='products', on_delete=models.SET_NULL,
+                                    null=True, blank=True)
     title = models.CharField(max_length=255)
     description = models.TextField()
     full_description = models.TextField()
@@ -65,6 +83,7 @@ class Product(models.Model):
     count = models.PositiveIntegerField()
     date = models.DateTimeField(auto_now_add=True)
     free_delivery = models.BooleanField(default=False)
+    views = models.PositiveIntegerField(default=0)
     tags = models.ManyToManyField(Tag)
     rating = models.FloatField(default=0.0)
     product_src = models.ImageField(upload_to=product_image_path)
