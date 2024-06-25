@@ -1,4 +1,7 @@
 from django.db import models
+from django.db.models import Avg
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
 
 
 class Category(models.Model):
@@ -64,6 +67,16 @@ class Review(models.Model):
         return f"Review by {self.author} - {self.rate} stars"
 
 
+@receiver(post_save, sender=Review)
+def update_product_rating_on_save(sender, instance, **kwargs):
+    instance.product.update_rating()
+
+
+@receiver(post_delete, sender=Review)
+def update_product_rating_on_delete(sender, instance, **kwargs):
+    instance.product.update_rating()
+
+
 def product_image_path(instance: "Product", filename: str) -> str:
     return f'products/product_{instance.id}/{filename}'
 
@@ -88,6 +101,11 @@ class Product(models.Model):
     rating = models.FloatField(default=0.0)
     product_src = models.ImageField(upload_to=product_image_path)
     product_alt = models.CharField(max_length=255)
+
+    def update_rating(self):
+        average_rating = self.reviews.aggregate(Avg('rate'))['rate__avg']
+        self.rating = average_rating if average_rating is not None else 0
+        self.save()
 
     def __str__(self):
         return self.title
