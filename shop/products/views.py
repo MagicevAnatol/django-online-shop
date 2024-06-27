@@ -38,6 +38,14 @@ class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
+    def retrieve(self, request, pk=None):
+        instance = self.get_object()
+        instance.views += 1
+        instance.save()
+
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
 
 class ProductReviewView(APIView):
 
@@ -53,3 +61,17 @@ class ProductReviewView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PopularProductView(APIView):
+    def get(self, request):
+        popular_product = Product.objects.all().order_by("-views", "-rating")[:5]
+        serializer = ProductSerializer(popular_product, many=True)
+        return Response(serializer.data)
+
+
+class LimitedProductView(APIView):
+    def get(self, request):
+        limited_products = Product.objects.filter(count__lt=100).order_by('-count')[:5]
+        serializer = ProductSerializer(limited_products, many=True)
+        return Response(serializer.data)
