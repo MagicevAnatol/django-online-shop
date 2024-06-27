@@ -96,6 +96,7 @@ class Product(models.Model):
     count = models.PositiveIntegerField()
     date = models.DateTimeField(auto_now_add=True)
     free_delivery = models.BooleanField(default=False)
+    limited = models.BooleanField(default=False)
     views = models.PositiveIntegerField(default=0)
     tags = models.ManyToManyField(Tag)
     rating = models.FloatField(default=0.0)

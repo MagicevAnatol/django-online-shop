@@ -3,14 +3,15 @@ from rest_framework import generics, viewsets, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Product, Category, Review
-from .serializers import ProductSerializer, CategorySerializer, ReviewSerializer
+from .models import Product, Category, Review, Tag
+from .serializers import ProductSerializer, CategorySerializer, ReviewSerializer, CatalogProductSerializer, \
+    TagSerializer
 from .filters import ProductFilter
 
 
 class CatalogListView(generics.ListAPIView):
     queryset = Product.objects.all()
-    serializer_class = ProductSerializer
+    serializer_class = CatalogProductSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_class = ProductFilter
 
@@ -65,13 +66,20 @@ class ProductReviewView(APIView):
 
 class PopularProductView(APIView):
     def get(self, request):
-        popular_product = Product.objects.all().order_by("-views", "-rating")[:5]
+        popular_product = Product.objects.all().order_by("-views", "-rating")[:8]
         serializer = ProductSerializer(popular_product, many=True)
         return Response(serializer.data)
 
 
 class LimitedProductView(APIView):
     def get(self, request):
-        limited_products = Product.objects.filter(count__lt=100).order_by('-count')[:5]
+        limited_products = Product.objects.filter(limited=1)[:16]
         serializer = ProductSerializer(limited_products, many=True)
+        return Response(serializer.data)
+
+
+class TagsProductView(APIView):
+    def get(self, request):
+        tags = Tag.objects.all()
+        serializer = TagSerializer(tags, many=True)
         return Response(serializer.data)

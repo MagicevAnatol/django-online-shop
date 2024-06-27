@@ -16,9 +16,13 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'image_src', 'image_alt', 'subcategories']
 
 
-class ImageSerializer(serializers.Serializer):
+class ImageSerializer(serializers.ModelSerializer):
     src = serializers.ImageField(source='product_src')
     alt = serializers.CharField(source='product_alt')
+
+    class Meta:
+        model = Product
+        fields = ['src', 'alt']
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -35,7 +39,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = ['name']
+        fields = ['id', 'name']
 
 
 class SpecificationSerializer(serializers.ModelSerializer):
@@ -56,3 +60,15 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = ['id', 'category', 'price', 'count', 'date', 'title', 'description', 'fullDescription',
                   'freeDelivery', 'images', 'tags', 'reviews', 'specifications', 'rating']
+
+
+class CatalogProductSerializer(serializers.ModelSerializer):
+    images = ImageSerializer(source='*')
+    tags = TagSerializer(many=True)
+    reviews = serializers.IntegerField(source='reviews.count')
+    freeDelivery = serializers.BooleanField(source='free_delivery')
+
+    class Meta:
+        model = Product
+        fields = ['id', 'category', 'price', 'count', 'date', 'title', 'description', 'freeDelivery',
+                  'images', 'tags', 'reviews', 'rating']
