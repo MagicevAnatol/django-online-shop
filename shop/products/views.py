@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, viewsets, status
 from rest_framework.response import Response
@@ -17,16 +18,41 @@ class CatalogListView(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        category_id = self.request.query_params.get('category')
+        # Извлечение параметров фильтрации
+        tags = self.request.query_params.getlist('tags[]')
         sort = self.request.query_params.get('sort', 'date')
+        name = self.request.query_params.get('filter[name]')
         sort_type = self.request.query_params.get('sortType', 'dec')
+        min_price = self.request.query_params.get('filter[minPrice]', 0)
+        max_price = self.request.query_params.get('filter[maxPrice]', 50000)
+        free_delivery = self.request.query_params.get('filter[freeDelivery]', 'false')
+        available = self.request.query_params.get('filter[available]', 'false')
+        # Фильтрация по тегам
+        if tags:
+            queryset = queryset.filter(tags__id__in=tags).distinct()
 
-        if category_id:
-            queryset = queryset.filter(category__id=category_id)
+        # Фильтрация по названию
+        if name:
+            queryset = queryset.filter(Q(title__icontains=name) | Q(description__icontains=name))
 
+        # Фильтрация по цене
+        queryset = queryset.filter(price__gte=min_price, price__lte=max_price)
+
+        # Фильтрация по наличию
+        if available == 'true':
+            queryset = queryset.filter(available=True)
+        else:
+            queryset = queryset.filter(available=False)
+
+        # Фильтрация по бесплатной доставке
+        if free_delivery == 'true':
+            queryset = queryset.filter(free_delivery=True)
+        else:
+            queryset = queryset.filter(free_delivery=False)
+
+        # Сортировка
         if sort_type == 'dec':
             sort = '-' + sort
-
         return queryset.order_by(sort)
 
     def list(self, request, *args, **kwargs):

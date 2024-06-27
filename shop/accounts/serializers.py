@@ -24,10 +24,17 @@ class UserSignUpSerializer(serializers.ModelSerializer):
         return user
 
 
+class AvatarSerializer(serializers.Serializer):
+    src = serializers.ImageField(source='avatar_src')
+    alt = serializers.CharField(source='avatar_alt')
+
+
 class UserProfileSerializer(serializers.ModelSerializer):
+    avatar = AvatarSerializer(source='*')
+
     class Meta:
         model = Profile
-        fields = ['full_name', 'email', 'phone', 'avatar_src', 'avatar_alt']
+        fields = ['full_name', 'email', 'phone', 'avatar']
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -36,4 +43,3 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['username', 'profile']
-

@@ -21,10 +21,11 @@ class ImageSerializer(serializers.ModelSerializer):
         model = Image
         fields = ('src', 'alt')
 
+
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
-        fields = ['author', 'email', 'text', 'rate', 'date',]
+        fields = ['author', 'email', 'text', 'rate', 'date', ]
 
     def create(self, validated_data):
         product_id = self.context['product_id']
