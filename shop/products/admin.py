@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django import forms
 
-from .models import Category, Subcategory, Tag, Product, Specification, Review
+from .models import Category, Subcategory, Tag, Product, Specification, Review, Image
 
 
 class SpecificationInline(admin.TabularInline):
@@ -29,11 +29,16 @@ class SubcategoryInline(admin.TabularInline):
     extra = 1
 
 
+class ImageInline(admin.TabularInline):
+    model = Image
+    extra = 1
+
+
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('title', 'category', 'subcategory', 'price', 'count', 'date', 'free_delivery', 'rating')
     search_fields = ('title', 'description', 'full_description')
     list_filter = ('category', 'subcategory', 'tags', 'free_delivery', 'date')
-    inlines = [SpecificationInline, ReviewInline]
+    inlines = [ImageInline, SpecificationInline, ReviewInline]
     fieldsets = (
         (None, {
             'fields': (
@@ -41,9 +46,6 @@ class ProductAdmin(admin.ModelAdmin):
                 'views', 'free_delivery',
                 'tags', 'rating'
             )
-        }),
-        ('Images', {
-            'fields': ('product_src', 'product_alt')
         }),
     )
 

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Tag, Product, Review, Specification, Subcategory
+from .models import Category, Tag, Product, Review, Specification, Subcategory, Image
 
 
 class SubcategorySerializer(serializers.ModelSerializer):
@@ -16,10 +16,10 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'image_src', 'image_alt', 'subcategories']
 
 
-class ImageSerializer(serializers.Serializer):
-    src = serializers.CharField()
-    alt = serializers.CharField()
-
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = ('src', 'alt')
 
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
@@ -45,7 +45,7 @@ class SpecificationSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    images = ImageSerializer(many=True, source='get_images')
+    images = ImageSerializer(many=True, read_only=True)
     tags = serializers.SlugRelatedField(slug_field='name', many=True, queryset=Tag.objects.all())
     reviews = ReviewSerializer(many=True)
     specifications = SpecificationSerializer(many=True)
@@ -59,7 +59,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class CatalogProductSerializer(serializers.ModelSerializer):
-    images = ImageSerializer(many=True, source='get_images')
+    images = ImageSerializer(many=True, read_only=True)
     tags = TagSerializer(many=True)
     reviews = serializers.IntegerField(source='reviews.count')
     freeDelivery = serializers.BooleanField(source='free_delivery')
