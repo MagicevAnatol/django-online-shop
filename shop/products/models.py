@@ -108,5 +108,8 @@ class Product(models.Model):
         self.rating = round(average_rating, 2) if average_rating is not None else 0
         self.save()
 
+    def get_images(self):
+        return [{'src': self.product_src.url, 'alt': self.product_alt}]
+
     def __str__(self):
         return self.title

@@ -29,6 +29,19 @@ class CatalogListView(generics.ListAPIView):
 
         return queryset.order_by(sort)
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response({
+            "items": serializer.data,
+            "currentPage": request.query_params.get('page', 1),
+            "lastPage": self.paginator.page.paginator.num_pages if self.paginator else 1
+        })
+
 
 class CategoryListView(generics.ListAPIView):
     queryset = Category.objects.all()
