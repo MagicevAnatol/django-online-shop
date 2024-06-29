@@ -29,17 +29,12 @@ class AvatarSerializer(serializers.Serializer):
     alt = serializers.CharField(source='avatar_alt')
 
 
-class UserProfileSerializer(serializers.ModelSerializer):
-    avatar = AvatarSerializer(source='*')
-
-    class Meta:
-        model = Profile
-        fields = ['full_name', 'email', 'phone', 'avatar']
-
-
 class UserSerializer(serializers.ModelSerializer):
-    profile = UserProfileSerializer()
+    fullName = serializers.CharField(source='profile.full_name')
+    email = serializers.EmailField(source='profile.email')
+    phone = serializers.CharField(source='profile.phone')
+    avatar = AvatarSerializer(source='profile')
 
     class Meta:
         model = User
-        fields = ['username', 'profile']
+        fields = ['fullName', 'email', 'phone', 'avatar']

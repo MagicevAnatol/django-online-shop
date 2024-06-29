@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from rest_framework import status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import UserSignUpSerializer, UserSerializer, UserProfileSerializer
+from .serializers import UserSignUpSerializer, UserSerializer, AvatarSerializer
 
 
 class SignUpView(APIView):
@@ -59,12 +59,26 @@ class UserProfileView(APIView):
 
     def post(self, request):
         user = request.user
-        profile_data = request.data.get('profile', {})
-        serializer = UserProfileSerializer(instance=user.profile, data=profile_data, partial=True)
+        data = request.data
+
+        profile_data = {
+            'full_name': data.get('fullName'),
+            'email': data.get('email'),
+            'phone': data.get('phone'),
+            'avatar_src': data.get('avatar', {}).get('src'),
+            'avatar_alt': data.get('avatar', {}).get('alt')
+        }
+
+        serializer = UserSerializer(instance=user, data={'profile': profile_data}, partial=True)
+
         if serializer.is_valid():
-            serializer.save()
+            profile = user.profile
+            profile.full_name = profile_data['full_name']
+            profile.email = profile_data['email']
+            profile.phone = profile_data['phone']
+            profile.save()
+
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class PasswordChangeView(APIView):
