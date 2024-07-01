@@ -11,7 +11,7 @@ from .filters import ProductFilter
 
 
 class CatalogListView(generics.ListAPIView):
-    queryset = Product.objects.all()
+    queryset = Product.objects.select_related('category', 'subcategory').prefetch_related('tags').all()
     serializer_class = CatalogProductSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_class = ProductFilter
@@ -75,7 +75,7 @@ class CategoryListView(generics.ListAPIView):
 
 
 class ProductViewSet(viewsets.ModelViewSet):
-    queryset = Product.objects.all()
+    queryset = Product.objects.select_related('category', 'subcategory').all()
     serializer_class = ProductSerializer
 
     def retrieve(self, request, pk=None):
@@ -91,7 +91,7 @@ class ProductReviewView(APIView):
 
     def get(self, request, product_id):
         product = Product.objects.get(pk=product_id)
-        reviews = Review.objects.filter(product=product)
+        reviews = Review.objects.select_related('product').filter(product=product)
         serializer = ReviewSerializer(reviews, many=True)
         return Response(serializer.data)
 
@@ -105,14 +105,14 @@ class ProductReviewView(APIView):
 
 class PopularProductView(APIView):
     def get(self, request):
-        popular_product = Product.objects.all().order_by("-views", "-rating")[:8]
+        popular_product = Product.objects.select_related('category', 'subcategory').prefetch_related('tags').order_by("-views", "-rating")[:8]
         serializer = CatalogProductSerializer(popular_product, many=True)
         return Response(serializer.data)
 
 
 class LimitedProductView(APIView):
     def get(self, request):
-        limited_products = Product.objects.filter(limited=1)[:16]
+        limited_products = Product.objects.select_related('category', 'subcategory').prefetch_related('tags').filter(limited=1)[:16]
         serializer = CatalogProductSerializer(limited_products, many=True)
         return Response(serializer.data)
 
