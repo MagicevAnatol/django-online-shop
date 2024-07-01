@@ -1,10 +1,11 @@
 import json
 
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.core.files.storage import default_storage
 from rest_framework import status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import UserSignUpSerializer, UserSerializer, AvatarSerializer
+from .serializers import UserSignUpSerializer, UserSerializer
 
 
 class SignUpView(APIView):
@@ -103,6 +104,13 @@ class AvatarUpdateView(APIView):
         user = request.user
         avatar = request.FILES.get('avatar')
         if avatar:
+            if user.profile.avatar_src:
+                try:
+                    if default_storage.exists(user.profile.avatar_src.name):
+                        default_storage.delete(user.profile.avatar_src.name)
+                except Exception as e:
+                    return Response({"error": f"Failed to delete old avatar: {str(e)}"},
+                                    status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             user.profile.avatar_src = avatar
             user.profile.save()
             return Response({"message": "Avatar updated successfully"}, status=status.HTTP_200_OK)
