@@ -3,17 +3,32 @@ from .models import Category, Tag, Product, Review, Specification, Subcategory, 
 
 
 class SubcategorySerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+
     class Meta:
         model = Subcategory
-        fields = ['id', 'name', 'image_src', 'image_alt']
+        fields = ['id', 'name', 'image']
+
+    def get_image(self, obj):
+        return {
+            "src": obj.image_src.url if obj.image_src else "",
+            "alt": obj.image_alt if obj.image_alt else "",
+        }
 
 
 class CategorySerializer(serializers.ModelSerializer):
-    subcategories = SubcategorySerializer(many=True, read_only=True, source='subcategory_set')
+    subcategories = SubcategorySerializer(many=True, read_only=True)
+    image = serializers.SerializerMethodField()
 
     class Meta:
         model = Category
-        fields = ['id', 'name', 'image_src', 'image_alt', 'subcategories']
+        fields = ['id', 'name', 'image', 'subcategories']
+
+    def get_image(self, obj):
+        return {
+            "src": obj.image_src.url if obj.image_src else "",
+            "alt": obj.image_alt if obj.image_alt else "",
+        }
 
 
 class ImageSerializer(serializers.ModelSerializer):

@@ -70,7 +70,7 @@ class CatalogListView(generics.ListAPIView):
 
 
 class CategoryListView(generics.ListAPIView):
-    queryset = Category.objects.all()
+    queryset = Category.objects.prefetch_related('subcategories').all()
     serializer_class = CategorySerializer
 
 
@@ -106,14 +106,14 @@ class ProductReviewView(APIView):
 class PopularProductView(APIView):
     def get(self, request):
         popular_product = Product.objects.all().order_by("-views", "-rating")[:8]
-        serializer = ProductSerializer(popular_product, many=True)
+        serializer = CatalogProductSerializer(popular_product, many=True)
         return Response(serializer.data)
 
 
 class LimitedProductView(APIView):
     def get(self, request):
         limited_products = Product.objects.filter(limited=1)[:16]
-        serializer = ProductSerializer(limited_products, many=True)
+        serializer = CatalogProductSerializer(limited_products, many=True)
         return Response(serializer.data)
 
 
