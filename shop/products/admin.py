@@ -35,7 +35,8 @@ class ImageInline(admin.TabularInline):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('title', 'category', 'subcategory', 'price', 'count', 'date', 'free_delivery', 'rating')
+    list_display = ('title', 'category', 'subcategory', 'price', 'count', 'date',
+                    'limited', 'free_delivery', 'available', 'rating')
     search_fields = ('title', 'description', 'full_description')
     list_filter = ('category', 'subcategory', 'tags', 'free_delivery', 'date')
     inlines = [ImageInline, SpecificationInline, ReviewInline]
@@ -43,7 +44,7 @@ class ProductAdmin(admin.ModelAdmin):
         (None, {
             'fields': (
                 'title', 'category', 'subcategory', 'description', 'full_description', 'price', 'count',
-                'views', 'free_delivery',
+                'views', 'free_delivery', 'limited', 'available',
                 'tags', 'rating'
             )
         }),

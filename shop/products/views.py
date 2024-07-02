@@ -1,18 +1,19 @@
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, viewsets, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Product, Category, Review, Tag
-from .serializers import ProductSerializer, CategorySerializer, ReviewSerializer, CatalogProductSerializer, \
-    TagSerializer
+from .models import Product, Category, Review, Tag, Cart, CartItem
+from .serializers import ProductSerializer, CategorySerializer, ReviewSerializer, ProductDetailSerializer, \
+    TagSerializer, BasketProductSerializer
 from .filters import ProductFilter
 
 
 class CatalogListView(generics.ListAPIView):
     queryset = Product.objects.select_related('category', 'subcategory').prefetch_related('tags').all()
-    serializer_class = CatalogProductSerializer
+    serializer_class = ProductSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_class = ProductFilter
 
@@ -27,6 +28,7 @@ class CatalogListView(generics.ListAPIView):
         max_price = self.request.query_params.get('filter[maxPrice]', 50000)
         free_delivery = self.request.query_params.get('filter[freeDelivery]', 'false')
         available = self.request.query_params.get('filter[available]', 'false')
+        category_id = (self.request.query_params.get('category'))
         # Фильтрация по тегам
         if tags:
             queryset = queryset.filter(tags__id__in=tags).distinct()
@@ -49,6 +51,10 @@ class CatalogListView(generics.ListAPIView):
             queryset = queryset.filter(free_delivery=True)
         else:
             queryset = queryset.filter(free_delivery=False)
+
+        # Фильтрация по категории
+        if category_id:
+            queryset = queryset.filter(category_id=category_id)
 
         # Сортировка
         if sort_type == 'dec':
@@ -76,7 +82,7 @@ class CategoryListView(generics.ListAPIView):
 
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.select_related('category', 'subcategory').all()
-    serializer_class = ProductSerializer
+    serializer_class = ProductDetailSerializer
 
     def retrieve(self, request, pk=None):
         instance = self.get_object()
@@ -104,16 +110,19 @@ class ProductReviewView(APIView):
 
 
 class PopularProductView(APIView):
+
     def get(self, request):
-        popular_product = Product.objects.select_related('category', 'subcategory').prefetch_related('tags').order_by("-views", "-rating")[:8]
-        serializer = CatalogProductSerializer(popular_product, many=True)
+        popular_product = Product.objects.select_related('category', 'subcategory').prefetch_related('tags').order_by(
+            "-views", "-rating")[:8]
+        serializer = ProductSerializer(popular_product, many=True)
         return Response(serializer.data)
 
 
 class LimitedProductView(APIView):
     def get(self, request):
-        limited_products = Product.objects.select_related('category', 'subcategory').prefetch_related('tags').filter(limited=1)[:16]
-        serializer = CatalogProductSerializer(limited_products, many=True)
+        limited_products = Product.objects.select_related('category', 'subcategory').prefetch_related('tags').filter(
+            limited=1)[:16]
+        serializer = ProductSerializer(limited_products, many=True)
         return Response(serializer.data)
 
 
@@ -122,3 +131,70 @@ class TagsProductView(APIView):
         tags = Tag.objects.all()
         serializer = TagSerializer(tags, many=True)
         return Response(serializer.data)
+
+
+class BasketView(APIView):
+
+    def get(self, request):
+        if request.user.is_authenticated:
+            profile = request.user.profile
+            cart = get_object_or_404(Cart, profile=profile)
+        else:
+            session_key = request.session.session_key
+            if not session_key:
+                request.session.create()
+                session_key = request.session.session_key
+            cart = get_object_or_404(Cart, session_key=session_key)
+
+        products = [item.product for item in cart.items.all()]
+        serializer = BasketProductSerializer(products, many=True, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        product_id = request.data.get('id')
+        count = request.data.get('count', 1)
+        product = get_object_or_404(Product, id=product_id)
+
+        if request.user.is_authenticated:
+            profile = request.user.profile
+            cart, created = Cart.objects.get_or_create(profile=profile)
+        else:
+            session_key = request.session.session_key
+            if not session_key:
+                request.session.create()
+                session_key = request.session.session_key
+            cart, created = Cart.objects.get_or_create(session_key=session_key)
+
+        cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+        if not created:
+            cart_item.count += count
+        else:
+            cart_item.count = count
+        cart_item.save()
+
+        products = [item.product for item in cart.items.all()]
+        serializer = BasketProductSerializer(products, many=True, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def delete(self, request):
+        product_id = request.data.get('id')
+        count = request.data.get('count', 1)
+        product = get_object_or_404(Product, id=product_id)
+
+        if request.user.is_authenticated:
+            profile = request.user.profile
+            cart = get_object_or_404(Cart, profile=profile)
+        else:
+            session_key = request.session.session_key
+            cart = get_object_or_404(Cart, session_key=session_key)
+
+        cart_item = get_object_or_404(CartItem, cart=cart, product=product)
+        if cart_item.count > count:
+            cart_item.count -= count
+            cart_item.save()
+        else:
+            cart_item.delete()
+
+        products = [item.product for item in cart.items.all()]
+        serializer = BasketProductSerializer(products, many=True, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)

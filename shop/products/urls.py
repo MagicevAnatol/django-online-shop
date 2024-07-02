@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
 from .views import CatalogListView, CategoryListView, ProductViewSet, ProductReviewView, PopularProductView, \
-    LimitedProductView, TagsProductView
+    LimitedProductView, TagsProductView, BasketView
 
 app_name = 'products'
 
@@ -17,4 +17,5 @@ urlpatterns = [
     path("products/popular", PopularProductView.as_view(), name='product-popular'),
     path("products/limited", LimitedProductView.as_view(), name='product-limited'),
     path("tags/", TagsProductView.as_view(), name='tags'),
+    path("basket", BasketView.as_view(), name='basket'),
 ]

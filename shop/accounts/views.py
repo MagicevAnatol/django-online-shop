@@ -6,20 +6,29 @@ from rest_framework import status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import UserSignUpSerializer, UserSerializer
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from products.signals import move_cart_to_user
 
 
 class SignUpView(APIView):
     def post(self, request):
+        print(request.data)
         data_string = list(request.data.keys())[0]
         data_dict = json.loads(data_string)
+        print(data_dict)
         serializer = UserSignUpSerializer(data=data_dict)
         if serializer.is_valid():
             user = serializer.save()
             username = data_dict.get("username")
             password = data_dict.get("password")
             user = authenticate(username=username, password=password)
+            old_session_key = request.session.session_key
             if user is not None:
                 login(request, user)
+                move_cart_to_user(request, user, old_session_key)
                 return Response({"message": "User created and logged in successfully"}, status=status.HTTP_201_CREATED)
             else:
                 return Response({"error": "User authenticated but not logged in"},

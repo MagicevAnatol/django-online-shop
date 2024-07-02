@@ -3,6 +3,8 @@ from django.db.models import Avg
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
+from accounts.models import Profile
+
 
 class Category(models.Model):
     class Meta:
@@ -118,3 +120,15 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Cart(models.Model):
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name='cart', null=True, blank=True)
+    session_key = models.CharField(max_length=40, null=True, blank=True)
+
+
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    count = models.PositiveIntegerField(default=1)
+    date_added = models.DateTimeField(auto_now_add=True)

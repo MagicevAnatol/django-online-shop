@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Tag, Product, Review, Specification, Subcategory, Image
+from .models import Category, Tag, Product, Review, Specification, Subcategory, Image, CartItem, Cart
 
 
 class SubcategorySerializer(serializers.ModelSerializer):
@@ -60,7 +60,7 @@ class SpecificationSerializer(serializers.ModelSerializer):
         fields = ['name', 'value']
 
 
-class ProductSerializer(serializers.ModelSerializer):
+class ProductDetailSerializer(serializers.ModelSerializer):
     images = ImageSerializer(many=True, read_only=True)
     tags = serializers.SlugRelatedField(slug_field='name', many=True, queryset=Tag.objects.all())
     reviews = ReviewSerializer(many=True)
@@ -74,7 +74,7 @@ class ProductSerializer(serializers.ModelSerializer):
                   'freeDelivery', 'images', 'tags', 'reviews', 'specifications', 'rating']
 
 
-class CatalogProductSerializer(serializers.ModelSerializer):
+class ProductSerializer(serializers.ModelSerializer):
     images = ImageSerializer(many=True, read_only=True)
     tags = TagSerializer(many=True)
     reviews = serializers.IntegerField(source='reviews.count')
@@ -84,3 +84,29 @@ class CatalogProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = ['id', 'category', 'price', 'count', 'date', 'title', 'description', 'freeDelivery',
                   'images', 'tags', 'reviews', 'rating']
+
+
+class BasketProductSerializer(serializers.ModelSerializer):
+    images = ImageSerializer(many=True, read_only=True)
+    tags = TagSerializer(many=True)
+    reviews = serializers.IntegerField(source='reviews.count')
+    freeDelivery = serializers.BooleanField(source='free_delivery')
+    count = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Product
+        fields = ['id', 'category', 'price', 'count', 'date', 'title', 'description', 'freeDelivery',
+                  'images', 'tags', 'reviews', 'rating']
+
+    def get_count(self, obj):
+        request = self.context.get('request')
+        if request.user.is_authenticated:
+            profile = request.user.profile
+            cart_item = CartItem.objects.filter(cart__profile=profile, product=obj).first()
+        else:
+            session_key = request.session.session_key
+            cart_item = CartItem.objects.filter(cart__session_key=session_key, product=obj).first()
+
+        if cart_item:
+            return cart_item.count
+        return 0
