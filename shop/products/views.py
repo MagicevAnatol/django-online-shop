@@ -205,7 +205,7 @@ class SaleProductView(APIView):
 
     def get(self, request):
         today = timezone.now().date()
-        sales = Sale.objects.filter(date_from__lte=today, date_to__gte=today)
+        sales = Sale.objects.filter(date_from__lte=today, date_to__gte=today).prefetch_related('product')
         serializer = SaleProductSerializer(sales, many=True)
         return Response({
             'items': serializer.data,

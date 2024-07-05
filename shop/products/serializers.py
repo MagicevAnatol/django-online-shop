@@ -114,28 +114,16 @@ class BasketProductSerializer(serializers.ModelSerializer):
 
 class SaleProductSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source="product_id")
-    price = serializers.SerializerMethodField()
+    price = serializers.IntegerField(source='product.price', read_only=True)
     salePrice = serializers.IntegerField(source='sale_price')
-    dateFrom = serializers.SerializerMethodField()
-    dateTo = serializers.SerializerMethodField()
-    title = serializers.SerializerMethodField()
+    dateFrom = serializers.DateField(format='%m-%d', source='date_from')
+    dateTo = serializers.DateField(format='%m-%d', source='date_to')
+    title = serializers.CharField(source='product.title', read_only=True)
     images = serializers.SerializerMethodField()
     class Meta:
         model = Sale
         fields = ['id', 'price', 'salePrice', 'dateFrom', 'dateTo', 'title', 'images']
 
-    def get_price(self, obj):
-        return Product.objects.get(pk=obj.product_id).price
-
-    def get_title(self, obj):
-        return Product.objects.get(pk=obj.product_id).title
-
     def get_images(self, obj):
         images = Image.objects.filter(product_id=obj.product_id)
         return [{"src": image.src.url, "alt": image.alt} for image in images]
-
-    def get_dateFrom(self, obj):
-        return obj.date_from.strftime('%m-%d')
-
-    def get_dateTo(self, obj):
-        return obj.date_to.strftime('%m-%d')
