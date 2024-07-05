@@ -1,9 +1,11 @@
+
 from django.db import models
 from django.db.models import Avg
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
 from accounts.models import Profile
+from django.utils import timezone
 
 
 class Category(models.Model):
@@ -132,3 +134,14 @@ class CartItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     count = models.PositiveIntegerField(default=1)
     date_added = models.DateTimeField(auto_now_add=True)
+
+
+class Sale(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    sale_price = models.DecimalField(max_digits=10, decimal_places=2)
+    date_from = models.DateField()
+    date_to = models.DateField()
+
+    def is_active(self):
+        today = timezone.now().date()
+        return self.date_from <= today <= self.date_to
