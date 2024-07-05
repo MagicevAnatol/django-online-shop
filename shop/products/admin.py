@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django import forms
 
-from .models import Category, Subcategory, Tag, Product, Specification, Review, Image
+from .models import Category, Subcategory, Tag, Product, Specification, Review, Image, Sale
 
 
 class SpecificationInline(admin.TabularInline):
@@ -53,6 +53,19 @@ class ProductAdmin(admin.ModelAdmin):
 
 class CategoryAdmin(admin.ModelAdmin):
     inlines = [SubcategoryInline]
+
+
+@admin.register(Sale)
+class SaleAdmin(admin.ModelAdmin):
+    list_display = ('product', 'sale_price', 'date_from', 'date_to', 'is_active')
+    list_filter = ('date_from', 'date_to')
+    search_fields = ('product__title',)
+
+    def is_active(self, obj):
+        return obj.is_active()
+
+    is_active.boolean = True
+    is_active.short_description = 'Active'
 
 
 admin.site.register(Category, CategoryAdmin)
