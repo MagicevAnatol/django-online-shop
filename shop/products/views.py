@@ -1,13 +1,14 @@
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, viewsets, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Product, Category, Review, Tag, Cart, CartItem
+from .models import Product, Category, Review, Tag, Cart, CartItem, Sale
 from .serializers import ProductSerializer, CategorySerializer, ReviewSerializer, ProductDetailSerializer, \
-    TagSerializer, BasketProductSerializer
+    TagSerializer, BasketProductSerializer, SaleProductSerializer
 from .filters import ProductFilter
 
 
@@ -198,3 +199,16 @@ class BasketView(APIView):
         products = [item.product for item in cart.items.all()]
         serializer = BasketProductSerializer(products, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class SaleProductView(APIView):
+
+    def get(self, request):
+        today = timezone.now().date()
+        sales = Sale.objects.filter(date_from__lte=today, date_to__gte=today)
+        serializer = SaleProductSerializer(sales, many=True)
+        return Response({
+            'items': serializer.data,
+            'currentPage': 1,
+            'lastPage': 1
+        }, status=status.HTTP_200_OK)

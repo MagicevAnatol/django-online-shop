@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Tag, Product, Review, Specification, Subcategory, Image, CartItem, Cart
+from .models import Category, Tag, Product, Review, Specification, Subcategory, Image, CartItem, Cart, Sale
 
 
 class SubcategorySerializer(serializers.ModelSerializer):
@@ -110,3 +110,32 @@ class BasketProductSerializer(serializers.ModelSerializer):
         if cart_item:
             return cart_item.count
         return 0
+
+
+class SaleProductSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source="product_id")
+    price = serializers.SerializerMethodField()
+    salePrice = serializers.IntegerField(source='sale_price')
+    dateFrom = serializers.SerializerMethodField()
+    dateTo = serializers.SerializerMethodField()
+    title = serializers.SerializerMethodField()
+    images = serializers.SerializerMethodField()
+    class Meta:
+        model = Sale
+        fields = ['id', 'price', 'salePrice', 'dateFrom', 'dateTo', 'title', 'images']
+
+    def get_price(self, obj):
+        return Product.objects.get(pk=obj.product_id).price
+
+    def get_title(self, obj):
+        return Product.objects.get(pk=obj.product_id).title
+
+    def get_images(self, obj):
+        images = Image.objects.filter(product_id=obj.product_id)
+        return [{"src": image.src.url, "alt": image.alt} for image in images]
+
+    def get_dateFrom(self, obj):
+        return obj.date_from.strftime('%m-%d')
+
+    def get_dateTo(self, obj):
+        return obj.date_to.strftime('%m-%d')
