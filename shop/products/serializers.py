@@ -1,3 +1,4 @@
+from django.utils import timezone
 from rest_framework import serializers
 from .models import Category, Tag, Product, Review, Specification, Subcategory, Image, CartItem, Cart, Sale
 
@@ -87,6 +88,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class BasketProductSerializer(serializers.ModelSerializer):
+    price = serializers.SerializerMethodField()
     images = ImageSerializer(many=True, read_only=True)
     tags = TagSerializer(many=True)
     reviews = serializers.IntegerField(source='reviews.count')
@@ -111,6 +113,13 @@ class BasketProductSerializer(serializers.ModelSerializer):
             return cart_item.count
         return 0
 
+    def get_price(self, obj):
+        today = timezone.now().date()
+        active_sale = Sale.objects.filter(product=obj, date_from__lte=today, date_to__gte=today).first()
+        if active_sale:
+            return active_sale.sale_price
+        return obj.price
+
 
 class SaleProductSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source="product_id")
@@ -120,6 +129,7 @@ class SaleProductSerializer(serializers.ModelSerializer):
     dateTo = serializers.DateField(format='%m-%d', source='date_to')
     title = serializers.CharField(source='product.title', read_only=True)
     images = serializers.SerializerMethodField()
+
     class Meta:
         model = Sale
         fields = ['id', 'price', 'salePrice', 'dateFrom', 'dateTo', 'title', 'images']

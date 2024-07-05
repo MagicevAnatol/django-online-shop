@@ -89,7 +89,10 @@ class ProductViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         instance.views += 1
         instance.save()
-
+        today = timezone.now().date()
+        active_sale = Sale.objects.filter(product=instance, date_from__lte=today, date_to__gte=today).first()
+        if active_sale:
+            instance.price = active_sale.sale_price
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
@@ -136,7 +139,7 @@ class TagsProductView(APIView):
 
 class BasketView(APIView):
 
-    def get(self, request):
+    def get_cart(self, request):
         if request.user.is_authenticated:
             profile = request.user.profile
             cart = get_object_or_404(Cart, profile=profile)
@@ -146,7 +149,10 @@ class BasketView(APIView):
                 request.session.create()
                 session_key = request.session.session_key
             cart = get_object_or_404(Cart, session_key=session_key)
+        return cart
 
+    def get(self, request):
+        cart = self.get_cart(request)
         products = [item.product for item in cart.items.all()]
         serializer = BasketProductSerializer(products, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -156,15 +162,7 @@ class BasketView(APIView):
         count = request.data.get('count', 1)
         product = get_object_or_404(Product, id=product_id)
 
-        if request.user.is_authenticated:
-            profile = request.user.profile
-            cart, created = Cart.objects.get_or_create(profile=profile)
-        else:
-            session_key = request.session.session_key
-            if not session_key:
-                request.session.create()
-                session_key = request.session.session_key
-            cart, created = Cart.objects.get_or_create(session_key=session_key)
+        cart = self.get_cart(request)
 
         cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
         if not created:
@@ -182,12 +180,7 @@ class BasketView(APIView):
         count = request.data.get('count', 1)
         product = get_object_or_404(Product, id=product_id)
 
-        if request.user.is_authenticated:
-            profile = request.user.profile
-            cart = get_object_or_404(Cart, profile=profile)
-        else:
-            session_key = request.session.session_key
-            cart = get_object_or_404(Cart, session_key=session_key)
+        cart = self.get_cart(request)
 
         cart_item = get_object_or_404(CartItem, cart=cart, product=product)
         if cart_item.count > count:
