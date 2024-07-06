@@ -13,7 +13,7 @@ class Category(models.Model):
         verbose_name = "Category"
         verbose_name_plural = "Categories"
 
-    name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
     image_src = models.ImageField(upload_to='categories/', default='default.jpg')
     image_alt = models.CharField(max_length=255, default='Default alt text')
 
@@ -27,7 +27,7 @@ class Subcategory(models.Model):
         verbose_name_plural = "Subcategories"
 
     category = models.ForeignKey(Category, related_name='subcategories', on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
     image_src = models.ImageField(upload_to='subcategories/', default='default.jpg')
     image_alt = models.CharField(max_length=255, default='Default alt text')
 
