@@ -44,14 +44,10 @@ class CatalogListView(generics.ListAPIView):
         # Фильтрация по наличию
         if available == 'true':
             queryset = queryset.filter(available=True)
-        else:
-            queryset = queryset.filter(available=False)
 
         # Фильтрация по бесплатной доставке
         if free_delivery == 'true':
             queryset = queryset.filter(free_delivery=True)
-        else:
-            queryset = queryset.filter(free_delivery=False)
 
         # Фильтрация по категории
         if category_id:
@@ -205,3 +201,12 @@ class SaleProductView(APIView):
             'currentPage': 1,
             'lastPage': 1
         }, status=status.HTTP_200_OK)
+
+
+class BannersView(APIView):
+
+    def get(self, request):
+        limited_products = Product.objects.select_related('category', 'subcategory').prefetch_related('tags').order_by(
+            "-date")[:4]
+        serializer = ProductSerializer(limited_products, many=True)
+        return Response(serializer.data)
