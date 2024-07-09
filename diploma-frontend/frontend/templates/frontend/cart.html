@@ -65,7 +65,13 @@
               <span class="Cart-price">${ basketCount.price }$$</span>
             </div>
             <div class="Cart-block" v-if="basketCount.count">
-              <button type="submit" class="btn btn_success btn_lg" >Оформить заказ</button>
+              {% if user.is_authenticated %}
+                <button type="submit" class="btn btn_success btn_lg">Оформить заказ</button>
+              {% else %}
+                <a href="{{ request.scheme }}://{{ request.get_host }}/sign-in/" class="btn btn_success btn_lg">
+                  Войти или зарегистрироваться
+                </a>
+              {% endif %}
             </div>
           </div>
         </form>

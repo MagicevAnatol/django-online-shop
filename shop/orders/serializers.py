@@ -22,14 +22,19 @@ class OrderProductSerializer(serializers.ModelSerializer):
         ]
 
     def get_count(self, obj):
-        user = self.context['request'].user
+        request = self.context.get('request')
+        if request.user.is_authenticated:
+            cart = Cart.objects.filter(profile=request.user.profile).first()
+        else:
+            session_key = request.session.session_key
+            if session_key:
+                cart, _ = Cart.objects.get_or_create(session_key=session_key)
+            else:
+                return 0
 
-        cart = Cart.objects.filter(profile=user.profile).first()
-
-        if cart:
-            cart_item = CartItem.objects.filter(cart=cart, product=obj).first()
-            if cart_item:
-                return cart_item.count
+        cart_item = CartItem.objects.filter(cart=cart, product=obj).first()
+        if cart_item:
+            return cart_item.count
         return 0
 
 
