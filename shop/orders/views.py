@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Order
 from .serializers import OrderSerializer, OrderCreateSerializer
+from products.models import Cart, CartItem
 
 
 class OrderAPIView(APIView):
@@ -25,7 +26,6 @@ class OrderAPIView(APIView):
         print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 class OrderDetailView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -40,6 +40,9 @@ class OrderDetailView(APIView):
         serializer = OrderSerializer(order, data=request.data, context={'request': request})
         if serializer.is_valid():
             order = serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            cart = Cart.objects.filter(profile=request.user.profile).first()
+            if cart:
+                CartItem.objects.filter(cart=cart).delete()
+            return Response({'orderId': order.id}, status=status.HTTP_201_CREATED)
         print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

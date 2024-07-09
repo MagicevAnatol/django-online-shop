@@ -1,42 +1,31 @@
 from decimal import Decimal
 
 from rest_framework import serializers
-from .models import Order
+from .models import Order, OrderProduct
 from products.serializers import TagSerializer, ImageSerializer
 from products.models import Product, Cart, CartItem
 
 
 class OrderProductSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField()
-    count = serializers.SerializerMethodField()
-    images = ImageSerializer(many=True, read_only=True)
-    tags = TagSerializer(many=True)
-    reviews = serializers.IntegerField(source='reviews.count')
-    freeDelivery = serializers.BooleanField(source='free_delivery')
+    id = serializers.IntegerField(source='product.id')
+    category = serializers.IntegerField(source='product.category.id')
+    price = serializers.DecimalField(source='product.price', max_digits=10, decimal_places=2)
+    count = serializers.IntegerField()
+    date = serializers.DateTimeField(source='product.date')
+    title = serializers.CharField(source='product.title')
+    description = serializers.CharField(source='product.description')
+    freeDelivery = serializers.BooleanField(source='product.free_delivery')
+    images = ImageSerializer(source='product.images', many=True, read_only=True)
+    tags = TagSerializer(source='product.tags', many=True)
+    reviews = serializers.IntegerField(source='product.reviews.count')
+    rating = serializers.FloatField(source='product.rating')
 
     class Meta:
-        model = Product
+        model = OrderProduct
         fields = [
             'id', 'category', 'price', 'count', 'date', 'title', 'description',
             'freeDelivery', 'images', 'tags', 'reviews', 'rating'
         ]
-
-    def get_count(self, obj):
-        request = self.context.get('request')
-        if request.user.is_authenticated:
-            cart = Cart.objects.filter(profile=request.user.profile).first()
-        else:
-            session_key = request.session.session_key
-            if session_key:
-                cart, _ = Cart.objects.get_or_create(session_key=session_key)
-            else:
-                return 0
-
-        cart_item = CartItem.objects.filter(cart=cart, product=obj).first()
-        if cart_item:
-            return cart_item.count
-        return 0
-
 
 class OrderCreateSerializer(serializers.ModelSerializer):
     products = serializers.ListField()
@@ -50,19 +39,20 @@ class OrderCreateSerializer(serializers.ModelSerializer):
         profile = self.context['request'].user.profile
         order = Order.objects.create(profile=profile, status="в доработке")
         total_cost = 0
-        print(products_data)
+
         for product_data in products_data:
-            print(product_data)
             product = Product.objects.get(id=product_data['id'])
-            order.products.add(product)
-            total_cost += product_data['price'] * product_data['count']
+            count = product_data['count']
+            OrderProduct.objects.create(order=order, product=product, count=count)
+            total_cost += product.price * count
+
         order.total_cost = total_cost
         order.save()
         return order
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    products = OrderProductSerializer(many=True, read_only=True)
+    products = OrderProductSerializer(source='orderproduct_set', many=True, read_only=True)
     createdAt = serializers.DateTimeField(source='created_at')
     fullName = serializers.CharField(source='profile.full_name', read_only=True)
     email = serializers.EmailField(source='profile.email', read_only=True)
