@@ -12,7 +12,7 @@ var mix = {
 				code: this.code,
 			})
 			let url = `/api/order/${orderId}`;
-			const paymentParam = this.getParameterByName('payment');
+			const paymentParam = this.payment;
 			if (paymentParam) {
 				url += `?payment=${paymentParam}`;
 			}
@@ -42,7 +42,8 @@ var mix = {
 			month: '',
 			year: '',
 			name: '',
-			code: ''
+			code: '',
+			payment: null
 		}
 	}
 }
