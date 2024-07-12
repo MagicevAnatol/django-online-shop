@@ -1,10 +1,16 @@
 from decimal import Decimal
-
+from django.core.exceptions import ValidationError
 from rest_framework import serializers
-from .models import Order, OrderProduct
+from .models import Order, OrderProduct, Payment
 from products.serializers import TagSerializer, ImageSerializer
 from products.models import Product, Cart, CartItem
 
+
+def validate_card_number(number):
+    if len(number) > 8:
+        raise ValidationError('Номер должен быть не длиннее восьми цифр.')
+    if int(number) % 2 != 0 or number.endswith('0'):
+        raise ValidationError('Номер должен быть чётным и не заканчиваться на ноль.')
 
 class OrderProductSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source='product.id')
@@ -79,3 +85,13 @@ class OrderSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
+
+
+class PaymentSerializer(serializers.ModelSerializer):
+    number = serializers.CharField(
+        validators=[validate_card_number]
+    )
+
+    class Meta:
+        model = Payment
+        fields = ['order', 'number', 'name', 'month', 'year', 'code']
