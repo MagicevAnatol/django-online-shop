@@ -1,9 +1,10 @@
 from decimal import Decimal
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 from rest_framework import serializers
 from .models import Order, OrderProduct, Payment
 from products.serializers import TagSerializer, ImageSerializer
-from products.models import Product, Cart, CartItem
+from products.models import Product, Cart, CartItem, Sale
 
 
 def validate_card_number(number):
@@ -12,10 +13,11 @@ def validate_card_number(number):
     if int(number) % 2 != 0 or number.endswith('0'):
         raise ValidationError('Номер должен быть чётным и не заканчиваться на ноль.')
 
+
 class OrderProductSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source='product.id')
     category = serializers.IntegerField(source='product.category.id')
-    price = serializers.DecimalField(source='product.price', max_digits=10, decimal_places=2)
+    price = serializers.SerializerMethodField()
     count = serializers.IntegerField()
     date = serializers.DateTimeField(source='product.date')
     title = serializers.CharField(source='product.title')
@@ -33,6 +35,14 @@ class OrderProductSerializer(serializers.ModelSerializer):
             'freeDelivery', 'images', 'tags', 'reviews', 'rating'
         ]
 
+    def get_price(self, obj):
+        today = timezone.now().date()
+        active_sale = Sale.objects.filter(product=obj.product, date_from__lte=today, date_to__gte=today).first()
+        if active_sale:
+            return active_sale.sale_price
+        return obj.product.price
+
+
 class OrderCreateSerializer(serializers.ModelSerializer):
     products = serializers.ListField()
 
@@ -48,9 +58,15 @@ class OrderCreateSerializer(serializers.ModelSerializer):
 
         for product_data in products_data:
             product = Product.objects.get(id=product_data['id'])
+            today = timezone.now().date()
+            active_sale = Sale.objects.filter(product=product, date_from__lte=today, date_to__gte=today).first()
+            if active_sale:
+                price = active_sale.sale_price
+            else:
+                price = product.price
             count = product_data['count']
             OrderProduct.objects.create(order=order, product=product, count=count)
-            total_cost += product.price * count
+            total_cost += price * count
 
         order.total_cost = total_cost
         order.save()
