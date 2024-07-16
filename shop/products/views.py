@@ -1,4 +1,4 @@
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
@@ -54,6 +54,9 @@ class CatalogListView(generics.ListAPIView):
             queryset = queryset.filter(category_id=category_id)
 
         # Сортировка
+        if sort == 'reviews':
+            queryset = queryset.annotate(review_count=Count('reviews'))
+            sort = 'review_count'
         if sort_type == 'dec':
             sort = '-' + sort
         return queryset.order_by(sort)
@@ -81,7 +84,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.select_related('category', 'subcategory').all()
     serializer_class = ProductDetailSerializer
 
-    def retrieve(self, request, pk=None):
+    def retrieve(self, request, pk=None, **kwargs):
         instance = self.get_object()
         instance.views += 1
         instance.save()
