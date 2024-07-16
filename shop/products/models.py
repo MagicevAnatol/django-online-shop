@@ -1,4 +1,3 @@
-
 from django.db import models
 from django.db.models import Avg
 from django.db.models.signals import post_save, post_delete
@@ -18,7 +17,7 @@ class Category(models.Model):
     image_alt = models.CharField(max_length=255, default='Default alt text')
 
     def __str__(self):
-        return self.name
+        return self.title
 
 
 class Subcategory(models.Model):
@@ -32,7 +31,7 @@ class Subcategory(models.Model):
     image_alt = models.CharField(max_length=255, default='Default alt text')
 
     def __str__(self):
-        return self.name
+        return self.title
 
 
 class Tag(models.Model):

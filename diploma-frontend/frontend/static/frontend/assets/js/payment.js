@@ -11,6 +11,7 @@ var mix = {
 				month: this.month,
 				code: this.code,
 			})
+
 			this.postData(`/api/payment/${orderId}`, {
 				name: this.name,
 				number: this.number1,
@@ -36,7 +37,7 @@ var mix = {
 			month: '',
 			year: '',
 			name: '',
-			code: ''
+			code: '',
 		}
 	}
 }

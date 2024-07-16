@@ -19,20 +19,25 @@
     </div>
     <div class="Section">
       <div class="wrap">
-        <form class="form Payment" action="#" method="post">
+        <form class="form Payment" action="#" method="post" @submit.prevent="submitPaymentSomeone">
+          {% csrf_token %}
           <div class="Payment-card">
             <div class="form-group">
               <label class="form-label">Номер счета
               </label>
-              <input class="form-input Payment-bill" id="numero1" name="numero1" type="text" placeholder="9999 9999" data-mask="9999 9999" data-validate="require pay"/>
+              <input class="form-input Payment-bill" id="numero1" name="numero1" type="text" placeholder="9999 9999" data-mask="9999 9999">
             </div>
             <div class="form-group"><a class="btn btn_success Payment-generate" href="#">Сгенирировать случайный счет</a>
             </div>
           </div>
-          <div class="Payment-pay"><a class="btn btn_primary" href="/progress-payment/">Оплатить</a>
+          <button type="submit" class="btn btn_primary">Оплатить</button>
           </div>
         </form>
       </div>
     </div>
   </div>
+{% endblock %}
+
+{% block mixins %}
+<script src="{% static 'frontend/assets/js/payment-someone.js' %}"></script>
 {% endblock %}

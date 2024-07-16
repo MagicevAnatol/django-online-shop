@@ -204,7 +204,12 @@
                   <div class="Cart-total">
                     <div class="Cart-block Cart-block_total">
                       <strong class="Cart-title">Итого:</strong>
-                      <span class="Cart-price">${ products.reduce((acc, el) => {return acc += (el.price * el.count)}, 0) }$$</span>
+                      <span class="Cart-price">
+                        ${
+                        products.reduce((acc, el) => { return acc + (el.price * el.count); }, 0)
+                        + (deliveryType === 'express' ? 500 : 0)
+                        }$$
+                      </span>
                     </div>
                     <div class="Cart-block">
                       <button class="btn btn_primary btn_lg" type="submit">Оплатить</button>

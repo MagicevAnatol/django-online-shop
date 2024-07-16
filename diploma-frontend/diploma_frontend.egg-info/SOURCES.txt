@@ -171,6 +171,7 @@ frontend/static/frontend/assets/js/catalog.js
 frontend/static/frontend/assets/js/historyOrder.js
 frontend/static/frontend/assets/js/index.js
 frontend/static/frontend/assets/js/order-detail.js
+frontend/static/frontend/assets/js/payment-someone.js
 frontend/static/frontend/assets/js/payment.js
 frontend/static/frontend/assets/js/product-detail.js
 frontend/static/frontend/assets/js/profile.js

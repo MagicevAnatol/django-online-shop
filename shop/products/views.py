@@ -144,7 +144,7 @@ class BasketView(APIView):
             if not session_key:
                 request.session.create()
                 session_key = request.session.session_key
-            cart = get_object_or_404(Cart, session_key=session_key)
+            cart, created = Cart.objects.get_or_create(session_key=session_key)
         return cart
 
     def get(self, request):
