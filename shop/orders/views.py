@@ -40,29 +40,16 @@ class OrderDetailView(APIView):
     def post(self, request, *args, **kwargs):
         order_id = request.data.get('orderId')
         payment_type = request.data.get('paymentType')
-        print(payment_type)
-
         order = Order.objects.get(id=order_id)
         serializer = OrderSerializer(order, data=request.data, context={'request': request})
 
         if serializer.is_valid():
             order = serializer.save()
-
-            if payment_type == 'someone':
-                fake_payment_data = {
-                    "order": order.id,
-                    "number": ''.join([str(random.randint(1, 9)) for _ in range(8)]),
-                    "name": "Annoying Orange",
-                    "month": "02",
-                    "year": "2025",
-                    "code": "123"
-                }
-                return Response({'orderId': order.id, 'payment': fake_payment_data},status=status.HTTP_200_OK)
-
             cart = Cart.objects.filter(profile=request.user.profile).first()
             if cart:
                 CartItem.objects.filter(cart=cart).delete()
-
+            if payment_type == 'someone':
+                return Response({'orderId': order_id}, status=status.HTTP_200_OK)
             return Response({'orderId': order.id}, status=status.HTTP_201_CREATED)
 
         print(serializer.errors)
@@ -71,16 +58,10 @@ class OrderDetailView(APIView):
 
 class PaymentView(APIView):
 
-    def get(self, request, *args, **kwargs):
-        print(request.data)
-        print(request.query_params)
-        return Response(request.data, status=status.HTTP_200_OK)
-
     def post(self, request, pk, *args, **kwargs):
         data = request.data.copy()
         data['order'] = pk
         serializer = PaymentSerializer(data=data)
-        print(data)
         if serializer.is_valid():
             order = Order.objects.get(id=pk)
             order.status = "оплачено"
@@ -90,3 +71,26 @@ class PaymentView(APIView):
         print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class PaymentSomeoneView(APIView):
+
+    def post(self, request, *args, **kwargs):
+        order_id = request.data.get('orderId')
+        number = request.data.get('number')
+        fake_payment_data = {
+            "order": order_id,
+            "number": number.replace(' ', ''),
+            "name": "Annoying Orange",
+            "month": "02",
+            "year": "2025",
+            "code": "123"
+        }
+        serializer = PaymentSerializer(data=fake_payment_data)
+        if serializer.is_valid():
+            order = Order.objects.get(id=order_id)
+            order.status = "оплачено"
+            order.save()
+            payment = serializer.save()
+            return Response({"orderId": order_id }, status=status.HTTP_200_OK)
+        print(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

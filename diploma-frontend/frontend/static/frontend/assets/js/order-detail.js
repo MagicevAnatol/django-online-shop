@@ -21,6 +21,7 @@ var mix = {
 						this.paymentError = data.paymentError
 					}
 				})
+
 		},
 		confirmOrder() {
 			if (this.orderId !== null) {
@@ -28,7 +29,7 @@ var mix = {
 					.then(({ data: { orderId } }) => {
 						alert('Заказ подтвержден')
                         if (this.paymentType === 'someone') {
-                            location.replace(`/payment-someone/`);
+                            location.replace(`/payment-someone/?orderId=${this.orderId}`);
                         }
                         else {
                             location.replace(`/payment/${orderId}/`);

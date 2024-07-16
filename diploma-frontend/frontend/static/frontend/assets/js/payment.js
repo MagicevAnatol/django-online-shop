@@ -11,13 +11,8 @@ var mix = {
 				month: this.month,
 				code: this.code,
 			})
-			let url = `/api/order/${orderId}`;
-			const paymentParam = this.payment;
-			if (paymentParam) {
-				url += `?payment=${paymentParam}`;
-			}
 
-			this.postData(url, {
+			this.postData(`/api/payment/${orderId}`, {
 				name: this.name,
 				number: this.number1,
 				year: this.year,
@@ -43,7 +38,6 @@ var mix = {
 			year: '',
 			name: '',
 			code: '',
-			payment: null
 		}
 	}
 }
