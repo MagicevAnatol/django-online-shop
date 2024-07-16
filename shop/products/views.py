@@ -1,4 +1,4 @@
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Sum
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
@@ -131,7 +131,7 @@ class LimitedProductView(APIView):
 
 class TagsProductView(APIView):
     def get(self, request):
-        tags = Tag.objects.all()
+        tags = Tag.objects.annotate(total_views=Sum('product__views')).order_by('-total_views')[:10]
         serializer = TagSerializer(tags, many=True)
         return Response(serializer.data)
 
