@@ -57,13 +57,7 @@ class OrderDetailView(APIView):
                     "year": "2025",
                     "code": "123"
                 }
-                payment_serializer = PaymentSerializer(data=fake_payment_data)
-
-                if payment_serializer.is_valid():
-                    return Response({'orderId': order.id, 'payment': fake_payment_data},
-                                    status=status.HTTP_201_CREATED)
-                print(serializer.errors)
-                return Response(payment_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'orderId': order.id, 'payment': fake_payment_data},status=status.HTTP_200_OK)
 
             cart = Cart.objects.filter(profile=request.user.profile).first()
             if cart:
