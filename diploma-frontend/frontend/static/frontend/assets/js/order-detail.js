@@ -27,7 +27,12 @@ var mix = {
 				this.postData(`/api/order/${this.orderId}`, { ...this })
 					.then(({ data: { orderId } }) => {
 						alert('Заказ подтвержден')
-						location.replace(`/payment/${orderId}/`)
+                        if (this.paymentType === 'someone') {
+                            location.replace(`/payment-someone/`);
+                        }
+                        else {
+                            location.replace(`/payment/${orderId}/`);
+                        }
 					})
 					.catch(() => {
 						console.warn('Ошибка при подтверждения заказа')
