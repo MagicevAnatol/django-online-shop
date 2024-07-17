@@ -9,6 +9,9 @@ from products.models import Cart, CartItem
 
 
 class OrderAPIView(APIView):
+    """
+    Представление для получения и создания заказов пользователя.
+    """
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
@@ -21,11 +24,13 @@ class OrderAPIView(APIView):
         if serializer.is_valid():
             order = serializer.save()
             return Response({'orderId': order.id}, status=status.HTTP_201_CREATED)
-        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class OrderDetailView(APIView):
+    """
+    Представление для получения и обновления деталей заказа.
+    """
     permission_classes = [IsAuthenticated]
 
     def get(self, request, pk, *args, **kwargs):
@@ -48,11 +53,13 @@ class OrderDetailView(APIView):
                 return Response({'orderId': order_id}, status=status.HTTP_200_OK)
             return Response({'orderId': order.id}, status=status.HTTP_201_CREATED)
 
-        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class PaymentView(APIView):
+    """
+    Представление для обработки оплаты заказа.
+    """
 
     def post(self, request, pk, *args, **kwargs):
         data = request.data.copy()
@@ -64,11 +71,13 @@ class PaymentView(APIView):
             order.save()
             payment = serializer.save()
             return Response(request.data, status=status.HTTP_200_OK)
-        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class PaymentSomeoneView(APIView):
+    """
+    Представление для обработки оплаты заказа от другого лица.
+    """
 
     def post(self, request, *args, **kwargs):
         order_id = request.data.get('orderId')
@@ -88,5 +97,4 @@ class PaymentSomeoneView(APIView):
             order.save()
             payment = serializer.save()
             return Response({"orderId": order_id }, status=status.HTTP_200_OK)
-        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

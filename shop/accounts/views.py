@@ -14,6 +14,9 @@ from products.signals import move_cart_to_user
 
 
 class SignUpView(APIView):
+    """
+    Представление для регистрации новых профилей и пользователей.
+    """
     def post(self, request):
         print(request.data)
         data_string = list(request.data.keys())[0]
@@ -37,6 +40,9 @@ class SignUpView(APIView):
 
 
 class SignInView(APIView):
+    """
+    Представление для входа в аккаунт.
+    """
     def post(self, request):
         if request.data.get("username"):
             username = request.data.get("username")
@@ -54,12 +60,18 @@ class SignInView(APIView):
 
 
 class SignOutView(APIView):
+    """
+    Представление для выхода с аккаунта.
+    """
     def post(self, request):
         logout(request)
         return Response({"message": "User signed out successfully"}, status=status.HTTP_200_OK)
 
 
 class UserProfileView(APIView):
+    """
+    Представление для отображения пользователя и изменения пользовательских данных.
+    """
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
@@ -92,6 +104,9 @@ class UserProfileView(APIView):
 
 
 class PasswordChangeView(APIView):
+    """
+    Представление для изменения пароля пользователя.
+    """
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
@@ -107,6 +122,9 @@ class PasswordChangeView(APIView):
 
 
 class AvatarUpdateView(APIView):
+    """
+    Представление для изменения аватара пользователя.
+    """
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):

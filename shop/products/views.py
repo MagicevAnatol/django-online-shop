@@ -13,19 +13,10 @@ from .serializers import ProductSerializer, CategorySerializer, ReviewSerializer
 from .filters import ProductFilter
 
 
-class Pagination(PageNumberPagination):
-    page_size = 20
-    page_size_query_param = 'limit'
-    max_page_size = 100
-
-    def get_paginated_response(self, data):
-        return Response({
-            'items': data,
-            'currentPage': self.page.number,
-            'lastPage': self.page.paginator.num_pages
-        })
-
 class CatalogListView(generics.ListAPIView):
+    """
+    Список товаров с фильтрацией, сортировкой и пагинацией.
+    """
     queryset = Product.objects.select_related('category', 'subcategory').prefetch_related('tags').all()
     serializer_class = ProductSerializer
     filter_backends = (DjangoFilterBackend,)
@@ -33,7 +24,6 @@ class CatalogListView(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        # Извлечение параметров фильтрации
         tags = self.request.query_params.getlist('tags[]')
         sort = self.request.query_params.get('sort', 'date')
         name = self.request.query_params.get('filter[name]')
@@ -77,22 +67,17 @@ class CatalogListView(generics.ListAPIView):
         return queryset.order_by(sort)
 
     def list(self, request, *args, **kwargs):
-        # Получение значения лимита и текущей страницы из запроса
         limit = int(request.query_params.get('limit', 20))
         current_page = int(request.query_params.get('currentPage', 1))
-
-        # Вычисление смещения и ограничения
         offset = (current_page - 1) * limit
         end = offset + limit
 
         queryset = self.filter_queryset(self.get_queryset())
         total_items = queryset.count()
-
-        # Получение нужного среза
         queryset = queryset[offset:end]
 
         serializer = self.get_serializer(queryset, many=True)
-        last_page = (total_items + limit - 1) // limit  # Вычисление последней страницы
+        last_page = (total_items + limit - 1) // limit
 
         return Response({
             "items": serializer.data,
@@ -102,11 +87,17 @@ class CatalogListView(generics.ListAPIView):
 
 
 class CategoryListView(generics.ListAPIView):
+    """
+    Список категорий с подкатегориями.
+    """
     queryset = Category.objects.prefetch_related('subcategories').all()
     serializer_class = CategorySerializer
 
 
 class ProductViewSet(viewsets.ModelViewSet):
+    """
+    Управление товарами, включая просмотр деталей и увеличение количества просмотров.
+    """
     queryset = Product.objects.select_related('category', 'subcategory').all()
     serializer_class = ProductDetailSerializer
 
@@ -123,6 +114,9 @@ class ProductViewSet(viewsets.ModelViewSet):
 
 
 class ProductReviewView(APIView):
+    """
+    Получение и создание отзывов для товара.
+    """
 
     def get(self, request, product_id):
         product = Product.objects.get(pk=product_id)
@@ -139,6 +133,9 @@ class ProductReviewView(APIView):
 
 
 class PopularProductView(APIView):
+    """
+    Получение популярных товаров (по количеству просмотров и рейтингу).
+    """
 
     def get(self, request):
         popular_product = Product.objects.select_related('category', 'subcategory').prefetch_related('tags').order_by(
@@ -148,6 +145,10 @@ class PopularProductView(APIView):
 
 
 class LimitedProductView(APIView):
+    """
+    Получение товаров с ограниченным количеством.
+    """
+
     def get(self, request):
         limited_products = Product.objects.select_related('category', 'subcategory').prefetch_related('tags').filter(
             limited=1)[:16]
@@ -156,6 +157,10 @@ class LimitedProductView(APIView):
 
 
 class TagsProductView(APIView):
+    """
+    Получение популярных тегов (по количеству просмотров товаров с этими тегами).
+    """
+
     def get(self, request):
         tags = Tag.objects.annotate(total_views=Sum('product__views')).order_by('-total_views')[:10]
         serializer = TagSerializer(tags, many=True)
@@ -163,6 +168,9 @@ class TagsProductView(APIView):
 
 
 class BasketView(APIView):
+    """
+    Управление корзиной пользователя (добавление, удаление товаров).
+    """
 
     def get_cart(self, request):
         if request.user.is_authenticated:
@@ -220,25 +228,23 @@ class BasketView(APIView):
 
 
 class SaleProductView(APIView):
+    """
+    Получение товаров со скидками с поддержкой пагинации.
+    """
 
     def get(self, request):
         limit = 12
-        current_page = int(request.query_params.get('currentPage'))
-        today = timezone.now().date()
-
-        # Вычисление смещения и ограничения
+        current_page = int(request.query_params.get('currentPage', 1))
         offset = (current_page - 1) * limit
         end = offset + limit
 
         today = timezone.now().date()
         sales = Sale.objects.filter(date_from__lte=today, date_to__gte=today).prefetch_related('product')
         total_items = sales.count()
-
-        # Получение нужного среза
         sales = sales[offset:end]
 
         serializer = SaleProductSerializer(sales, many=True)
-        last_page = (total_items + limit - 1) // limit  # Вычисление последней страницы
+        last_page = (total_items + limit - 1) // limit
 
         return Response({
             'items': serializer.data,
@@ -248,6 +254,9 @@ class SaleProductView(APIView):
 
 
 class BannersView(APIView):
+    """
+    Получение последних добавленных товаров для баннеров.
+    """
 
     def get(self, request):
         limited_products = Product.objects.select_related('category', 'subcategory').prefetch_related('tags').order_by(
