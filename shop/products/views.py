@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, viewsets, status
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -11,6 +12,18 @@ from .serializers import ProductSerializer, CategorySerializer, ReviewSerializer
     TagSerializer, BasketProductSerializer, SaleProductSerializer
 from .filters import ProductFilter
 
+
+class Pagination(PageNumberPagination):
+    page_size = 20
+    page_size_query_param = 'limit'
+    max_page_size = 100
+
+    def get_paginated_response(self, data):
+        return Response({
+            'items': data,
+            'currentPage': self.page.number,
+            'lastPage': self.page.paginator.num_pages
+        })
 
 class CatalogListView(generics.ListAPIView):
     queryset = Product.objects.select_related('category', 'subcategory').prefetch_related('tags').all()
@@ -29,7 +42,8 @@ class CatalogListView(generics.ListAPIView):
         max_price = self.request.query_params.get('filter[maxPrice]', 50000)
         free_delivery = self.request.query_params.get('filter[freeDelivery]', 'false')
         available = self.request.query_params.get('filter[available]', 'false')
-        category_id = (self.request.query_params.get('category'))
+        category_id = self.request.query_params.get('category')
+
         # Фильтрация по тегам
         if tags:
             queryset = queryset.filter(tags__id__in=tags).distinct()
@@ -59,19 +73,31 @@ class CatalogListView(generics.ListAPIView):
             sort = 'review_count'
         if sort_type == 'dec':
             sort = '-' + sort
+
         return queryset.order_by(sort)
 
     def list(self, request, *args, **kwargs):
+        # Получение значения лимита и текущей страницы из запроса
+        limit = int(request.query_params.get('limit', 20))
+        current_page = int(request.query_params.get('currentPage', 1))
+
+        # Вычисление смещения и ограничения
+        offset = (current_page - 1) * limit
+        end = offset + limit
+
         queryset = self.filter_queryset(self.get_queryset())
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
+        total_items = queryset.count()
+
+        # Получение нужного среза
+        queryset = queryset[offset:end]
+
         serializer = self.get_serializer(queryset, many=True)
+        last_page = (total_items + limit - 1) // limit  # Вычисление последней страницы
+
         return Response({
             "items": serializer.data,
-            "currentPage": request.query_params.get('page', 1),
-            "lastPage": self.paginator.page.paginator.num_pages if self.paginator else 1
+            "currentPage": current_page,
+            "lastPage": last_page
         })
 
 
@@ -196,13 +222,28 @@ class BasketView(APIView):
 class SaleProductView(APIView):
 
     def get(self, request):
+        limit = 12
+        current_page = int(request.query_params.get('currentPage'))
+        today = timezone.now().date()
+
+        # Вычисление смещения и ограничения
+        offset = (current_page - 1) * limit
+        end = offset + limit
+
         today = timezone.now().date()
         sales = Sale.objects.filter(date_from__lte=today, date_to__gte=today).prefetch_related('product')
+        total_items = sales.count()
+
+        # Получение нужного среза
+        sales = sales[offset:end]
+
         serializer = SaleProductSerializer(sales, many=True)
+        last_page = (total_items + limit - 1) // limit  # Вычисление последней страницы
+
         return Response({
             'items': serializer.data,
-            'currentPage': 1,
-            'lastPage': 1
+            'currentPage': current_page,
+            'lastPage': last_page
         }, status=status.HTTP_200_OK)
 
 
