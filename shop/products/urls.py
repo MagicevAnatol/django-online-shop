@@ -13,7 +13,7 @@ urlpatterns = [
     path("", include(router.urls)),
     path('catalog/', CatalogListView.as_view(), name='catalog'),
     path('categories/', CategoryListView.as_view(), name='category-list'),
-    path('product/<int:product_id>/review', ProductReviewView.as_view(), name='product-reviews'),
+    path('product/<int:product_id>/reviews', ProductReviewView.as_view(), name='product-reviews'),
     path("products/popular", PopularProductView.as_view(), name='product-popular'),
     path("products/limited", LimitedProductView.as_view(), name='product-limited'),
     path("tags/", TagsProductView.as_view(), name='tags'),
