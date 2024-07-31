@@ -1,0 +1,170 @@
+[
+{
+  "model": "products.review",
+  "pk": 1,
+  "fields": {
+    "author": "admin",
+    "email": "admin@gmail.com",
+    "text": "Good mouse",
+    "rate": 4,
+    "date": "2024-07-02T22:13:52.239Z",
+    "product": 1
+  }
+},
+{
+  "model": "products.review",
+  "pk": 2,
+  "fields": {
+    "author": "admin",
+    "email": "admin@gmail.com",
+    "text": "Not bad monitor",
+    "rate": 4,
+    "date": "2024-07-02T22:18:13.141Z",
+    "product": 2
+  }
+},
+{
+  "model": "products.review",
+  "pk": 3,
+  "fields": {
+    "author": "John",
+    "email": "john@mail.ru",
+    "text": "Very good notebok",
+    "rate": 5,
+    "date": "2024-07-07T14:17:17.222Z",
+    "product": 6
+  }
+},
+{
+  "model": "products.review",
+  "pk": 4,
+  "fields": {
+    "author": "John",
+    "email": "john@mail.ru",
+    "text": "ноутбук для офисной работы, почты, интернета, просмотра фильмов.",
+    "rate": 5,
+    "date": "2024-07-15T14:55:40.455Z",
+    "product": 7
+  }
+},
+{
+  "model": "products.review",
+  "pk": 5,
+  "fields": {
+    "author": "Виктория М.",
+    "email": "test@mail.ru",
+    "text": "Стирает тихо.",
+    "rate": 5,
+    "date": "2024-07-15T15:12:10.261Z",
+    "product": 9
+  }
+},
+{
+  "model": "products.review",
+  "pk": 6,
+  "fields": {
+    "author": "Денис К.",
+    "email": "test@mail.ru",
+    "text": "Еще не включал, только доставили, внешне выглядит добротно и вписывается в будущий интерьер",
+    "rate": 5,
+    "date": "2024-07-15T15:32:37.276Z",
+    "product": 14
+  }
+},
+{
+  "model": "products.review",
+  "pk": 7,
+  "fields": {
+    "author": "Сергей Р.",
+    "email": "test@mail.ru",
+    "text": "Отличный ,вместительный ,тихий!",
+    "rate": 5,
+    "date": "2024-07-15T15:32:37.278Z",
+    "product": 14
+  }
+},
+{
+  "model": "products.review",
+  "pk": 8,
+  "fields": {
+    "author": "Владимир М.",
+    "email": "test@mail.ru",
+    "text": "Всё супер, работает. Через приложение схватывает отлично. Брал в две комнаты 21,5 и 16 метров, сложилось впечатление, что большую комнату охладил даже быстрее.",
+    "rate": 5,
+    "date": "2024-07-15T15:43:30.255Z",
+    "product": 16
+  }
+},
+{
+  "model": "products.review",
+  "pk": 9,
+  "fields": {
+    "author": "Глущенко Сергей",
+    "email": "test@mail.ru",
+    "text": "Привезли только уличный блок кондиционера, внутреннего блока кондиционера как оказалось не было. Как выяснилось позже, от данного товара уже отказались днем ранее. Поддержка игнорит, как и продавец.",
+    "rate": 1,
+    "date": "2024-07-15T15:43:30.257Z",
+    "product": 16
+  }
+},
+{
+  "model": "products.review",
+  "pk": 10,
+  "fields": {
+    "author": "Игорь П.",
+    "email": "test@mail.ru",
+    "text": "Отличные",
+    "rate": 5,
+    "date": "2024-07-25T16:52:37.064Z",
+    "product": 25
+  }
+},
+{
+  "model": "products.review",
+  "pk": 11,
+  "fields": {
+    "author": "Ирина Б.",
+    "email": "test@mail.ru",
+    "text": "Туфли- что надо. Очень удобные и красивые. Спасибо",
+    "rate": 5,
+    "date": "2024-07-25T16:56:23.567Z",
+    "product": 26
+  }
+},
+{
+  "model": "products.review",
+  "pk": 12,
+  "fields": {
+    "author": "Сергей Б.",
+    "email": "test@mail.ru",
+    "text": "Хорошие, удобные туфли. На свой 42 размер брал 43.",
+    "rate": 4,
+    "date": "2024-07-25T16:56:23.569Z",
+    "product": 26
+  }
+},
+{
+  "model": "products.review",
+  "pk": 13,
+  "fields": {
+    "author": "Ирина Ш.",
+    "email": "test@mail.ru",
+    "text": "Отличные берцы, как уставные, только легче и намного мягче и удобнее!!!",
+    "rate": 5,
+    "date": "2024-07-25T16:59:48.592Z",
+    "product": 27
+  }
+},
+{
+  "model": "products.review",
+  "pk": 14,
+  "fields": {
+    "author": "Максим С.",
+    "email": "test@mail.ru",
+    "text": "Маломерят на пол размера",
+    "rate": 3,
+    "date": "2024-07-25T16:59:48.594Z",
+    "product": 27
+  }
+}
+]

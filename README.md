@@ -23,35 +23,35 @@ source venv/bin/activate  # Для Windows используйте `venv\Scripts\
 pip install -r requirements.txt
 ```
 
-### 4. Применение миграций
+### 4. Установка пакета фронт-энда
+
+Для установки пакета перейди в директорию diploma-frontend, далее используйте команды:
+
+```sh
+cd diploma-frontend/
+python setup.py sdist
+pip install dist/diploma-frontend-0.6.tar.gz 
+```
+
+### 5. Применение миграций
 
 Примените миграции для настройки базы данных, для начала запустите сервер для создания базы
 данных, остановите, накатите миграции::
 
 ```sh 
-cd /shop
+cd shop/
 python manage.py runserver
 CTRL + C 
 python manage.py migrate
 ```
 
-### 5. Загрузка данных
+### 6. Загрузка данных
 
-Если у вас есть файл data.json с предустановленными данными, вы можете загрузить их в базу данных:
+Для загрузки предустановленных данных используйте команду:
 
 ```sh 
-python manage.py loaddata data.json
+python import_data.py
 ```
-
-### 6. Установка пакета фронт-энда
-
-Для установки пакета перейди в директорию diploma-frontend, далее используйте команды:
-
-```sh
-python setup.py sdist
-pip install .\dist\diploma_frontend-0.6.tar.gz
-```
-
 
 ### 7. Запуск сервера разработки
 
@@ -81,5 +81,5 @@ docker-compose up --build
 Если необходимо изменить JS или другие данные фронт-энда, установить пакет с флагом --no-cache-dir, 
 чтобы избежать проблем с кэшированием пакетов:
 ```sh
-pip install --no-cache-dir .\dist\diploma_frontend-0.6.tar.gz
+pip install --no-cache-dir dist/diploma-frontend-0.6.tar.gz
 ```

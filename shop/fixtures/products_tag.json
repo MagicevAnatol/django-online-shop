@@ -1,0 +1,163 @@
+[
+{
+  "model": "products.tag",
+  "pk": 1,
+  "fields": {
+    "name": "Монитор"
+  }
+},
+{
+  "model": "products.tag",
+  "pk": 2,
+  "fields": {
+    "name": "Беспроводное"
+  }
+},
+{
+  "model": "products.tag",
+  "pk": 3,
+  "fields": {
+    "name": "Type-C"
+  }
+},
+{
+  "model": "products.tag",
+  "pk": 4,
+  "fields": {
+    "name": "USB"
+  }
+},
+{
+  "model": "products.tag",
+  "pk": 5,
+  "fields": {
+    "name": "Lenovo"
+  }
+},
+{
+  "model": "products.tag",
+  "pk": 6,
+  "fields": {
+    "name": "Logitech"
+  }
+},
+{
+  "model": "products.tag",
+  "pk": 7,
+  "fields": {
+    "name": "TechnoSpirit"
+  }
+},
+{
+  "model": "products.tag",
+  "pk": 8,
+  "fields": {
+    "name": "ECOMNEX"
+  }
+},
+{
+  "model": "products.tag",
+  "pk": 9,
+  "fields": {
+    "name": "Ноутбук"
+  }
+},
+{
+  "model": "products.tag",
+  "pk": 10,
+  "fields": {
+    "name": "Полноразмерные"
+  }
+},
+{
+  "model": "products.tag",
+  "pk": 11,
+  "fields": {
+    "name": "Samsung"
+  }
+},
+{
+  "model": "products.tag",
+  "pk": 12,
+  "fields": {
+    "name": "Weissgauff"
+  }
+},
+{
+  "model": "products.tag",
+  "pk": 13,
+  "fields": {
+    "name": "АТЛАНТ"
+  }
+},
+{
+  "model": "products.tag",
+  "pk": 14,
+  "fields": {
+    "name": "Кондиционер"
+  }
+},
+{
+  "model": "products.tag",
+  "pk": 15,
+  "fields": {
+    "name": "Viomi"
+  }
+},
+{
+  "model": "products.tag",
+  "pk": 16,
+  "fields": {
+    "name": "realme"
+  }
+},
+{
+  "model": "products.tag",
+  "pk": 17,
+  "fields": {
+    "name": "Tecno"
+  }
+},
+{
+  "model": "products.tag",
+  "pk": 18,
+  "fields": {
+    "name": "Bluetooth"
+  }
+},
+{
+  "model": "products.tag",
+  "pk": 19,
+  "fields": {
+    "name": "Thomas Munz"
+  }
+},
+{
+  "model": "products.tag",
+  "pk": 20,
+  "fields": {
+    "name": "Artarianna"
+  }
+},
+{
+  "model": "products.tag",
+  "pk": 21,
+  "fields": {
+    "name": "Женская обувь"
+  }
+},
+{
+  "model": "products.tag",
+  "pk": 22,
+  "fields": {
+    "name": "Мужская обувь"
+  }
+},
+{
+  "model": "products.tag",
+  "pk": 23,
+  "fields": {
+    "name": "Arsman"
+  }
+}
+]

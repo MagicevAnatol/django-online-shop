@@ -1,0 +1,29 @@
+[
+{
+  "model": "products.category",
+  "pk": 1,
+  "fields": {
+    "title": "Электроника",
+    "image_src": "categories/изображение_2024-07-07_171309727.png",
+    "image_alt": "Default alt text"
+  }
+},
+{
+  "model": "products.category",
+  "pk": 2,
+  "fields": {
+    "title": "Бытовая техника",
+    "image_src": "categories/изображение_2024-07-15_180435385.png",
+    "image_alt": "Default alt text"
+  }
+},
+{
+  "model": "products.category",
+  "pk": 3,
+  "fields": {
+    "title": "Обувь",
+    "image_src": "categories/изображение_2024-07-25_193908113.png",
+    "image_alt": "Default alt text"
+  }
+}
+]

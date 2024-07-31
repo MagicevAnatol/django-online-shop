@@ -1,0 +1,659 @@
+[
+{
+  "model": "products.specification",
+  "pk": 1,
+  "fields": {
+    "name": "Процессор",
+    "value": "Intel Celeron J4105",
+    "product": 7
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 2,
+  "fields": {
+    "name": "Оперативная память",
+    "value": "8 ГБ",
+    "product": 7
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 3,
+  "fields": {
+    "name": "Общий объем SSD, ГБ",
+    "value": "256",
+    "product": 7
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 4,
+  "fields": {
+    "name": "Видеокарта",
+    "value": "Intel UHD Graphics 600",
+    "product": 7
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 5,
+  "fields": {
+    "name": "Процессор",
+    "value": "Intel Celeron J4125",
+    "product": 8
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 6,
+  "fields": {
+    "name": "Оперативная память",
+    "value": "8 ГБ",
+    "product": 8
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 7,
+  "fields": {
+    "name": "Общий объем SSD, ГБ",
+    "value": "512",
+    "product": 8
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 8,
+  "fields": {
+    "name": "Видеокарта",
+    "value": "Intel UHD Graphics 600",
+    "product": 8
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 9,
+  "fields": {
+    "name": "Тип загрузки",
+    "value": "Фронтальная",
+    "product": 9
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 10,
+  "fields": {
+    "name": "Загрузка белья, кг",
+    "value": "7.5",
+    "product": 9
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 11,
+  "fields": {
+    "name": "Максимальная скорость отжима, об./мин.",
+    "value": "1200",
+    "product": 9
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 12,
+  "fields": {
+    "name": "Класс энергопотребления",
+    "value": "A+++",
+    "product": 9
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 13,
+  "fields": {
+    "name": "Размеры, мм (ШхГхВ)",
+    "value": "600*430*847",
+    "product": 9
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 14,
+  "fields": {
+    "name": "Тип загрузки",
+    "value": "Фронтальная",
+    "product": 10
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 15,
+  "fields": {
+    "name": "Загрузка белья, кг",
+    "value": "6",
+    "product": 10
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 16,
+  "fields": {
+    "name": "Максимальная скорость отжима, об./мин.",
+    "value": "1200",
+    "product": 10
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 17,
+  "fields": {
+    "name": "Класс энергопотребления",
+    "value": "B",
+    "product": 10
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 18,
+  "fields": {
+    "name": "Размеры, мм (ШхГхВ)",
+    "value": "600 x 440 x 850",
+    "product": 10
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 19,
+  "fields": {
+    "name": "Тип загрузки",
+    "value": "Фронтальная",
+    "product": 11
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 20,
+  "fields": {
+    "name": "Загрузка белья, кг",
+    "value": "9",
+    "product": 11
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 21,
+  "fields": {
+    "name": "Максимальная скорость отжима, об./мин.",
+    "value": "1400",
+    "product": 11
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 22,
+  "fields": {
+    "name": "Класс энергопотребления",
+    "value": "A",
+    "product": 11
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 23,
+  "fields": {
+    "name": "Размеры, мм (ШхГхВ)",
+    "value": "600х560х850",
+    "product": 11
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 24,
+  "fields": {
+    "name": "Общий объем, л",
+    "value": "267",
+    "product": 12
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 25,
+  "fields": {
+    "name": "Общий объем холодильной камеры, л",
+    "value": "193",
+    "product": 12
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 26,
+  "fields": {
+    "name": "Класс энергопотребления",
+    "value": "A+",
+    "product": 12
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 27,
+  "fields": {
+    "name": "Размеры, мм (ШхГхВ)",
+    "value": "540 х 550 х 1775",
+    "product": 12
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 28,
+  "fields": {
+    "name": "Общий объем, л",
+    "value": "342",
+    "product": 13
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 29,
+  "fields": {
+    "name": "Общий объем холодильной камеры, л",
+    "value": "245",
+    "product": 13
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 30,
+  "fields": {
+    "name": "Класс энергопотребления",
+    "value": "600х685х195",
+    "product": 13
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 31,
+  "fields": {
+    "name": "Размеры, мм (ШхГхВ)",
+    "value": "A++",
+    "product": 13
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 32,
+  "fields": {
+    "name": "Общий объем, л",
+    "value": "649",
+    "product": 14
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 33,
+  "fields": {
+    "name": "Общий объем холодильной камеры, л",
+    "value": "371",
+    "product": 14
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 34,
+  "fields": {
+    "name": "Класс энергопотребления",
+    "value": "A+",
+    "product": 14
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 35,
+  "fields": {
+    "name": "Размеры, мм (ШхГхВ)",
+    "value": "1200х629х1868",
+    "product": 14
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 36,
+  "fields": {
+    "name": "Рекомендуемая площадь помещения, кв.м",
+    "value": "25",
+    "product": 15
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 37,
+  "fields": {
+    "name": "Мощность в режиме охлаждения, Вт",
+    "value": "2500",
+    "product": 15
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 38,
+  "fields": {
+    "name": "Режим работы кондиционера",
+    "value": "Обогрев, Осушение, Охлаждение",
+    "product": 15
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 39,
+  "fields": {
+    "name": "Мощность в режиме обогрева, Вт",
+    "value": "2500",
+    "product": 15
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 40,
+  "fields": {
+    "name": "Мин. уровень шума внутреннего блока, дБ",
+    "value": "22",
+    "product": 15
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 41,
+  "fields": {
+    "name": "Рекомендуемая площадь помещения, кв.м",
+    "value": "25",
+    "product": 16
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 42,
+  "fields": {
+    "name": "Мощность в режиме охлаждения, Вт",
+    "value": "2500",
+    "product": 16
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 43,
+  "fields": {
+    "name": "Режим работы кондиционера",
+    "value": "Охлаждение, Обогрев",
+    "product": 16
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 44,
+  "fields": {
+    "name": "Мощность в режиме обогрева, Вт",
+    "value": "2600",
+    "product": 16
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 45,
+  "fields": {
+    "name": "Высота каблука, см",
+    "value": "8.5",
+    "product": 22
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 46,
+  "fields": {
+    "name": "Материал",
+    "value": "Натуральная кожа",
+    "product": 22
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 47,
+  "fields": {
+    "name": "Материал стельки",
+    "value": "Кожа",
+    "product": 22
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 48,
+  "fields": {
+    "name": "Материал подошвы обуви",
+    "value": "Резина",
+    "product": 22
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 49,
+  "fields": {
+    "name": "Полнота",
+    "value": "4",
+    "product": 22
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 50,
+  "fields": {
+    "name": "Материал",
+    "value": "Замша искусственная",
+    "product": 23
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 51,
+  "fields": {
+    "name": "Материал стельки",
+    "value": "Искусственная кожа",
+    "product": 23
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 52,
+  "fields": {
+    "name": "Материал подошвы обуви",
+    "value": "Резина",
+    "product": 23
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 53,
+  "fields": {
+    "name": "Высота каблука, см",
+    "value": "1",
+    "product": 23
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 54,
+  "fields": {
+    "name": "Сезон",
+    "value": "Лето",
+    "product": 23
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 55,
+  "fields": {
+    "name": "Материал",
+    "value": "Текстиль",
+    "product": 24
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 56,
+  "fields": {
+    "name": "Материал стельки",
+    "value": "Текстиль",
+    "product": 24
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 57,
+  "fields": {
+    "name": "Материал подошвы обуви",
+    "value": "ПВХ (поливинилхлорид)",
+    "product": 24
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 58,
+  "fields": {
+    "name": "Полнота",
+    "value": "6",
+    "product": 24
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 59,
+  "fields": {
+    "name": "Сезон",
+    "value": "Лето",
+    "product": 24
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 60,
+  "fields": {
+    "name": "Материал подкладки обуви",
+    "value": "Текстиль",
+    "product": 25
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 61,
+  "fields": {
+    "name": "Внутренний материал",
+    "value": "Текстиль",
+    "product": 25
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 62,
+  "fields": {
+    "name": "Полнота",
+    "value": "R (средняя)",
+    "product": 25
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 63,
+  "fields": {
+    "name": "Сезон",
+    "value": "Демисезон",
+    "product": 25
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 64,
+  "fields": {
+    "name": "Высота каблука, см",
+    "value": "1.7",
+    "product": 26
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 65,
+  "fields": {
+    "name": "Высота платформы, см",
+    "value": "1.2",
+    "product": 26
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 66,
+  "fields": {
+    "name": "Материал",
+    "value": "Натуральная кожа",
+    "product": 26
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 67,
+  "fields": {
+    "name": "Материал стельки",
+    "value": "Кожа",
+    "product": 26
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 68,
+  "fields": {
+    "name": "Материал подошвы обуви",
+    "value": "ТЭП (полимерный термопластичный материал)",
+    "product": 26
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 69,
+  "fields": {
+    "name": "Сезон",
+    "value": "Демисезон",
+    "product": 27
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 70,
+  "fields": {
+    "name": "Материал подкладки обуви",
+    "value": "Текстиль",
+    "product": 27
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 71,
+  "fields": {
+    "name": "Внутренний материал",
+    "value": "Текстиль",
+    "product": 27
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 72,
+  "fields": {
+    "name": "Полнота",
+    "value": "6",
+    "product": 27
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 73,
+  "fields": {
+    "name": "Страна-изготовитель",
+    "value": "Россия",
+    "product": 27
+  }
+}
+]

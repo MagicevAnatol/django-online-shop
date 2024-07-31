@@ -1,0 +1,106 @@
+[
+{
+  "model": "products.cart",
+  "pk": 4,
+  "fields": {
+    "profile": 1,
+    "session_key": null
+  }
+},
+{
+  "model": "products.cart",
+  "pk": 5,
+  "fields": {
+    "profile": null,
+    "session_key": "t9ez3vti57zh6bj2ig95u199n600hrgc"
+  }
+},
+{
+  "model": "products.cart",
+  "pk": 6,
+  "fields": {
+    "profile": null,
+    "session_key": "qwj16pgly3slth4wm0qcsets3m9pl1pz"
+  }
+},
+{
+  "model": "products.cart",
+  "pk": 8,
+  "fields": {
+    "profile": 3,
+    "session_key": null
+  }
+},
+{
+  "model": "products.cart",
+  "pk": 9,
+  "fields": {
+    "profile": null,
+    "session_key": "6i3am6vkd9wsmprpsda9jq63thj4zg2c"
+  }
+},
+{
+  "model": "products.cart",
+  "pk": 10,
+  "fields": {
+    "profile": null,
+    "session_key": "66dw9ahewx2d40iji1asjb81kdet3l3g"
+  }
+},
+{
+  "model": "products.cart",
+  "pk": 11,
+  "fields": {
+    "profile": null,
+    "session_key": "e7in9nim7wa0iipc91kvbqhe87j7sa6q"
+  }
+},
+{
+  "model": "products.cart",
+  "pk": 12,
+  "fields": {
+    "profile": null,
+    "session_key": "tvoy8wgtwhp3jg7fzkcoqbcn10muvh19"
+  }
+},
+{
+  "model": "products.cart",
+  "pk": 13,
+  "fields": {
+    "profile": null,
+    "session_key": "foqzdn63axhkknvpuiywc0t54f2pqtjt"
+  }
+},
+{
+  "model": "products.cart",
+  "pk": 15,
+  "fields": {
+    "profile": 4,
+    "session_key": null
+  }
+},
+{
+  "model": "products.cart",
+  "pk": 16,
+  "fields": {
+    "profile": null,
+    "session_key": "04qvzotmowdluhkfd7h4l1odk1k9vobz"
+  }
+},
+{
+  "model": "products.cart",
+  "pk": 17,
+  "fields": {
+    "profile": null,
+    "session_key": "wclzcsug64si7dd93q5nulol00vfrrs8"
+  }
+},
+{
+  "model": "products.cart",
+  "pk": 18,
+  "fields": {
+    "profile": null,
+    "session_key": "bdomegi2sm3rrd7fmq0h7i6bl4nfxdwp"
+  }
+}
+]

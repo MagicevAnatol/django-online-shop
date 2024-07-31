@@ -1,0 +1,50 @@
+[
+{
+  "model": "accounts.profile",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "full_name": "admin",
+    "email": "admin@gmail.com",
+    "phone": "+7 999 555 999",
+    "avatar_src": "profiles/user_1/avatar/man-avatar-icon-vector_O4A3InY.jpg",
+    "avatar_alt": "Avatar"
+  }
+},
+{
+  "model": "accounts.profile",
+  "pk": 2,
+  "fields": {
+    "user": 2,
+    "full_name": "test",
+    "email": "test@mail.ru",
+    "phone": "",
+    "avatar_src": "",
+    "avatar_alt": ""
+  }
+},
+{
+  "model": "accounts.profile",
+  "pk": 3,
+  "fields": {
+    "user": 3,
+    "full_name": "John",
+    "email": "john@gmail.com",
+    "phone": "",
+    "avatar_src": "",
+    "avatar_alt": ""
+  }
+},
+{
+  "model": "accounts.profile",
+  "pk": 4,
+  "fields": {
+    "user": 4,
+    "full_name": "test1",
+    "email": "test1@mail.ru",
+    "phone": "",
+    "avatar_src": "",
+    "avatar_alt": ""
+  }
+}
+]

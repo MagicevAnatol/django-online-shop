@@ -1,0 +1,102 @@
+[
+{
+  "model": "products.subcategory",
+  "pk": 1,
+  "fields": {
+    "category": 1,
+    "title": "Мониторы",
+    "image_src": "subcategories/DELL-Optiplex-7040-Desktop.webp",
+    "image_alt": "Default alt text"
+  }
+},
+{
+  "model": "products.subcategory",
+  "pk": 2,
+  "fields": {
+    "category": 1,
+    "title": "Периферия",
+    "image_src": "subcategories/изображение_2024-07-07_171210989.png",
+    "image_alt": "Default alt text"
+  }
+},
+{
+  "model": "products.subcategory",
+  "pk": 3,
+  "fields": {
+    "category": 1,
+    "title": "Смартфоны",
+    "image_src": "subcategories/изображение_2024-07-06_003139963.png",
+    "image_alt": "Default alt text"
+  }
+},
+{
+  "model": "products.subcategory",
+  "pk": 4,
+  "fields": {
+    "category": 1,
+    "title": "Ноутбуки",
+    "image_src": "subcategories/изображение_2024-07-15_184441731.png",
+    "image_alt": "Default alt text"
+  }
+},
+{
+  "model": "products.subcategory",
+  "pk": 5,
+  "fields": {
+    "category": 2,
+    "title": "Стиральные машины",
+    "image_src": "subcategories/изображение_2024-07-15_180522140.png",
+    "image_alt": "Default alt text"
+  }
+},
+{
+  "model": "products.subcategory",
+  "pk": 6,
+  "fields": {
+    "category": 2,
+    "title": "Холодильники",
+    "image_src": "subcategories/изображение_2024-07-15_182239804.png",
+    "image_alt": "Default alt text"
+  }
+},
+{
+  "model": "products.subcategory",
+  "pk": 7,
+  "fields": {
+    "category": 2,
+    "title": "Кондиционеры",
+    "image_src": "subcategories/изображение_2024-07-15_183530194.png",
+    "image_alt": "Default alt text"
+  }
+},
+{
+  "model": "products.subcategory",
+  "pk": 8,
+  "fields": {
+    "category": 1,
+    "title": "Смарт-часы",
+    "image_src": "subcategories/изображение_2024-07-18_004134202.png",
+    "image_alt": "Default alt text"
+  }
+},
+{
+  "model": "products.subcategory",
+  "pk": 9,
+  "fields": {
+    "category": 3,
+    "title": "Женская обувь",
+    "image_src": "subcategories/изображение_2024-07-25_194006971.png",
+    "image_alt": "Default alt text"
+  }
+},
+{
+  "model": "products.subcategory",
+  "pk": 10,
+  "fields": {
+    "category": 3,
+    "title": "Мужская обувь",
+    "image_src": "subcategories/изображение_2024-07-25_194813721.png",
+    "image_alt": "Default alt text"
+  }
+}
+]
