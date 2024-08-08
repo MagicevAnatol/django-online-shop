@@ -18,10 +18,8 @@ class SignUpView(APIView):
     Представление для регистрации новых профилей и пользователей.
     """
     def post(self, request):
-        print(request.data)
         data_string = list(request.data.keys())[0]
         data_dict = json.loads(data_string)
-        print(data_dict)
         serializer = UserSignUpSerializer(data=data_dict)
         if serializer.is_valid():
             user = serializer.save()
