@@ -56,7 +56,7 @@ class Command(BaseCommand):
         # Удаляем неиспользуемые изображения
         for file_path in unused_images:
             try:
-                # os.remove(file_path)
+                os.remove(file_path)
                 self.stdout.write(self.style.SUCCESS(f'Удалено: {file_path}'))
             except OSError as e:
                 self.stdout.write(self.style.ERROR(f'Ошибка при удалении {file_path}: {e}'))
