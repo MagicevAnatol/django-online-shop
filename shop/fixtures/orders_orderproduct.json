@@ -205,5 +205,59 @@
     "product": 3,
     "count": 2
   }
+},
+{
+  "model": "orders.orderproduct",
+  "pk": 26,
+  "fields": {
+    "order": 20,
+    "product": 2,
+    "count": 1
+  }
+},
+{
+  "model": "orders.orderproduct",
+  "pk": 27,
+  "fields": {
+    "order": 20,
+    "product": 4,
+    "count": 1
+  }
+},
+{
+  "model": "orders.orderproduct",
+  "pk": 28,
+  "fields": {
+    "order": 20,
+    "product": 25,
+    "count": 1
+  }
+},
+{
+  "model": "orders.orderproduct",
+  "pk": 29,
+  "fields": {
+    "order": 21,
+    "product": 12,
+    "count": 1
+  }
+},
+{
+  "model": "orders.orderproduct",
+  "pk": 30,
+  "fields": {
+    "order": 22,
+    "product": 12,
+    "count": 1
+  }
+},
+{
+  "model": "orders.orderproduct",
+  "pk": 31,
+  "fields": {
+    "order": 23,
+    "product": 13,
+    "count": 1
+  }
 }
 ]

@@ -78,5 +78,65 @@
     "count": 1,
     "date_added": "2024-07-23T20:00:29.436Z"
   }
+},
+{
+  "model": "products.cartitem",
+  "pk": 42,
+  "fields": {
+    "cart": 21,
+    "product": 26,
+    "count": 2,
+    "date_added": "2024-08-08T19:17:43.899Z"
+  }
+},
+{
+  "model": "products.cartitem",
+  "pk": 43,
+  "fields": {
+    "cart": 22,
+    "product": 24,
+    "count": 1,
+    "date_added": "2024-08-08T19:18:08.915Z"
+  }
+},
+{
+  "model": "products.cartitem",
+  "pk": 44,
+  "fields": {
+    "cart": 22,
+    "product": 25,
+    "count": 1,
+    "date_added": "2024-08-08T19:18:13.192Z"
+  }
+},
+{
+  "model": "products.cartitem",
+  "pk": 45,
+  "fields": {
+    "cart": 23,
+    "product": 26,
+    "count": 1,
+    "date_added": "2024-08-08T19:24:44.332Z"
+  }
+},
+{
+  "model": "products.cartitem",
+  "pk": 46,
+  "fields": {
+    "cart": 23,
+    "product": 12,
+    "count": 1,
+    "date_added": "2024-08-08T19:25:44.457Z"
+  }
+},
+{
+  "model": "products.cartitem",
+  "pk": 54,
+  "fields": {
+    "cart": 4,
+    "product": 13,
+    "count": 1,
+    "date_added": "2024-08-08T20:17:53.415Z"
+  }
 }
 ]

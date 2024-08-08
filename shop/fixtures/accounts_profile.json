@@ -46,5 +46,29 @@
     "avatar_src": "",
     "avatar_alt": ""
   }
+},
+{
+  "model": "accounts.profile",
+  "pk": 5,
+  "fields": {
+    "user": 5,
+    "full_name": "test3",
+    "email": "test3@mail.ru",
+    "phone": "+373951651",
+    "avatar_src": "profiles\\user_5\\avatar\\man-avatar-icon-vector.jpg",
+    "avatar_alt": ""
+  }
+},
+{
+  "model": "accounts.profile",
+  "pk": 6,
+  "fields": {
+    "user": 6,
+    "full_name": "test4",
+    "email": "test4@mail.ru",
+    "phone": "+7 999 555 999",
+    "avatar_src": "",
+    "avatar_alt": ""
+  }
 }
 ]

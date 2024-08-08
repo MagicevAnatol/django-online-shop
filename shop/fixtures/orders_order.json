@@ -236,5 +236,61 @@
     "city": "",
     "address": ""
   }
+},
+{
+  "model": "orders.order",
+  "pk": 20,
+  "fields": {
+    "profile": 5,
+    "created_at": "2024-08-08T20:08:05.182Z",
+    "delivery_type": "express",
+    "payment_type": "online",
+    "total_cost": "26220.00",
+    "status": "оплачено",
+    "city": "Moscow",
+    "address": "Moscow"
+  }
+},
+{
+  "model": "orders.order",
+  "pk": 21,
+  "fields": {
+    "profile": 5,
+    "created_at": "2024-08-08T20:09:37.059Z",
+    "delivery_type": "",
+    "payment_type": "",
+    "total_cost": "93176.00",
+    "status": "в доработке",
+    "city": "",
+    "address": ""
+  }
+},
+{
+  "model": "orders.order",
+  "pk": 22,
+  "fields": {
+    "profile": 5,
+    "created_at": "2024-08-08T20:09:53.208Z",
+    "delivery_type": "express",
+    "payment_type": "someone",
+    "total_cost": "93676.00",
+    "status": "оплачено",
+    "city": "Moscow",
+    "address": "Moscow"
+  }
+},
+{
+  "model": "orders.order",
+  "pk": 23,
+  "fields": {
+    "profile": 6,
+    "created_at": "2024-08-08T21:45:17.394Z",
+    "delivery_type": "express",
+    "payment_type": "someone",
+    "total_cost": "38000.00",
+    "status": "оплачено",
+    "city": "Moscow",
+    "address": "Moscow"
+  }
 }
 ]

@@ -14,7 +14,7 @@
     "free_delivery": false,
     "limited": true,
     "available": true,
-    "views": 13,
+    "views": 15,
     "rating": 4.0,
     "tags": [
       2,
@@ -37,7 +37,7 @@
     "free_delivery": false,
     "limited": false,
     "available": true,
-    "views": 21,
+    "views": 25,
     "rating": 4.0,
     "tags": [
       1
@@ -81,7 +81,7 @@
     "free_delivery": false,
     "limited": true,
     "available": true,
-    "views": 23,
+    "views": 24,
     "rating": 0.0,
     "tags": [
       3
@@ -125,7 +125,7 @@
     "free_delivery": true,
     "limited": true,
     "available": true,
-    "views": 2,
+    "views": 3,
     "rating": 5.0,
     "tags": [
       5,
@@ -260,7 +260,7 @@
     "free_delivery": true,
     "limited": false,
     "available": true,
-    "views": 15,
+    "views": 18,
     "rating": 0.0,
     "tags": [
       10,
@@ -283,7 +283,7 @@
     "free_delivery": false,
     "limited": false,
     "available": true,
-    "views": 1,
+    "views": 5,
     "rating": 0.0,
     "tags": [
       10,
@@ -306,7 +306,7 @@
     "free_delivery": true,
     "limited": true,
     "available": true,
-    "views": 3,
+    "views": 4,
     "rating": 5.0,
     "tags": [
       10,
@@ -351,7 +351,7 @@
     "free_delivery": true,
     "limited": true,
     "available": true,
-    "views": 8,
+    "views": 11,
     "rating": 3.0,
     "tags": [
       14,
@@ -443,7 +443,7 @@
     "free_delivery": true,
     "limited": false,
     "available": true,
-    "views": 0,
+    "views": 1,
     "rating": 0.0,
     "tags": [
       2,
@@ -535,7 +535,7 @@
     "free_delivery": true,
     "limited": false,
     "available": true,
-    "views": 0,
+    "views": 4,
     "rating": 0.0,
     "tags": [
       21
@@ -557,7 +557,7 @@
     "free_delivery": false,
     "limited": false,
     "available": true,
-    "views": 0,
+    "views": 3,
     "rating": 5.0,
     "tags": [
       22
@@ -579,7 +579,7 @@
     "free_delivery": true,
     "limited": false,
     "available": true,
-    "views": 1,
+    "views": 4,
     "rating": 4.5,
     "tags": [
       22,
@@ -602,7 +602,7 @@
     "free_delivery": true,
     "limited": false,
     "available": true,
-    "views": 0,
+    "views": 1,
     "rating": 4.0,
     "tags": [
       22,
