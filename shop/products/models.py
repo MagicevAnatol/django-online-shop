@@ -13,8 +13,8 @@ class Category(models.Model):
         verbose_name_plural = "Categories"
 
     title = models.CharField(max_length=255)
-    image_src = models.ImageField(upload_to='categories/', default='default.jpg')
-    image_alt = models.CharField(max_length=255, default='Default alt text')
+    image_src = models.ImageField(upload_to="categories/", default="default.jpg")
+    image_alt = models.CharField(max_length=255, default="Default alt text")
 
     def __str__(self):
         return self.title
@@ -25,10 +25,12 @@ class Subcategory(models.Model):
         verbose_name = "Subcategory"
         verbose_name_plural = "Subcategories"
 
-    category = models.ForeignKey(Category, related_name='subcategories', on_delete=models.CASCADE)
+    category = models.ForeignKey(
+        Category, related_name="subcategories", on_delete=models.CASCADE
+    )
     title = models.CharField(max_length=255)
-    image_src = models.ImageField(upload_to='subcategories/', default='default.jpg')
-    image_alt = models.CharField(max_length=255, default='Default alt text')
+    image_src = models.ImageField(upload_to="subcategories/", default="default.jpg")
+    image_alt = models.CharField(max_length=255, default="Default alt text")
 
     def __str__(self):
         return self.title
@@ -48,7 +50,9 @@ class Specification(models.Model):
 
     name = models.CharField(max_length=255)
     value = models.CharField(max_length=255)
-    product = models.ForeignKey('Product', related_name='specifications', on_delete=models.CASCADE)
+    product = models.ForeignKey(
+        "Product", related_name="specifications", on_delete=models.CASCADE
+    )
 
     def __str__(self):
         return f"{self.name}: {self.value}"
@@ -64,7 +68,9 @@ class Review(models.Model):
     text = models.TextField()
     rate = models.PositiveIntegerField()
     date = models.DateTimeField(auto_now_add=True)
-    product = models.ForeignKey('Product', related_name='reviews', on_delete=models.CASCADE)
+    product = models.ForeignKey(
+        "Product", related_name="reviews", on_delete=models.CASCADE
+    )
 
     def __str__(self):
         return f"Review by {self.author} - {self.rate} stars"
@@ -81,11 +87,13 @@ def update_product_rating_on_delete(sender, instance, **kwargs):
 
 
 def product_image_path(instance: "Image", filename: str) -> str:
-    return f'products/product_{instance.product_id}/{filename}'
+    return f"products/product_{instance.product_id}/{filename}"
 
 
 class Image(models.Model):
-    product = models.ForeignKey('Product', related_name='images', on_delete=models.CASCADE)
+    product = models.ForeignKey(
+        "Product", related_name="images", on_delete=models.CASCADE
+    )
     src = models.ImageField(upload_to=product_image_path)
     alt = models.CharField(max_length=255)
 
@@ -99,8 +107,13 @@ class Product(models.Model):
         verbose_name_plural = "Products"
 
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    subcategory = models.ForeignKey(Subcategory, related_name='products', on_delete=models.SET_NULL,
-                                    null=True, blank=True)
+    subcategory = models.ForeignKey(
+        Subcategory,
+        related_name="products",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
     title = models.CharField(max_length=255)
     description = models.TextField()
     full_description = models.TextField()
@@ -115,7 +128,7 @@ class Product(models.Model):
     rating = models.FloatField(default=0.0)
 
     def update_rating(self):
-        average_rating = self.reviews.aggregate(Avg('rate'))['rate__avg']
+        average_rating = self.reviews.aggregate(Avg("rate"))["rate__avg"]
         self.rating = round(average_rating, 2) if average_rating is not None else 0
         self.save()
 
@@ -124,12 +137,14 @@ class Product(models.Model):
 
 
 class Cart(models.Model):
-    profile = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name='cart', null=True, blank=True)
+    profile = models.OneToOneField(
+        Profile, on_delete=models.CASCADE, related_name="cart", null=True, blank=True
+    )
     session_key = models.CharField(max_length=40, null=True, blank=True)
 
 
 class CartItem(models.Model):
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="items")
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     count = models.PositiveIntegerField(default=1)
     date_added = models.DateTimeField(auto_now_add=True)

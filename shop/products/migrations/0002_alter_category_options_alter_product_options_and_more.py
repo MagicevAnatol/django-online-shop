@@ -7,53 +7,85 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('products', '0001_initial'),
+        ("products", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='category',
-            options={'verbose_name': 'Category', 'verbose_name_plural': 'Categories'},
+            name="category",
+            options={"verbose_name": "Category", "verbose_name_plural": "Categories"},
         ),
         migrations.AlterModelOptions(
-            name='product',
-            options={'verbose_name': 'Product', 'verbose_name_plural': 'Products'},
+            name="product",
+            options={"verbose_name": "Product", "verbose_name_plural": "Products"},
         ),
         migrations.AlterModelOptions(
-            name='review',
-            options={'verbose_name': 'Review', 'verbose_name_plural': 'Reviews'},
+            name="review",
+            options={"verbose_name": "Review", "verbose_name_plural": "Reviews"},
         ),
         migrations.AlterModelOptions(
-            name='specification',
-            options={'verbose_name': 'Specification', 'verbose_name_plural': 'Specifications'},
-        ),
-        migrations.AddField(
-            model_name='category',
-            name='image_alt',
-            field=models.CharField(default='Default alt text', max_length=255),
-        ),
-        migrations.AddField(
-            model_name='category',
-            name='image_src',
-            field=models.ImageField(default='default.jpg', upload_to='categories/'),
-        ),
-        migrations.CreateModel(
-            name='Subcategory',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('image_src', models.ImageField(default='default.jpg', upload_to='subcategories/')),
-                ('image_alt', models.CharField(default='Default alt text', max_length=255)),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='subcategories', to='products.category')),
-            ],
+            name="specification",
             options={
-                'verbose_name': 'Subcategory',
-                'verbose_name_plural': 'Subcategories',
+                "verbose_name": "Specification",
+                "verbose_name_plural": "Specifications",
             },
         ),
         migrations.AddField(
-            model_name='product',
-            name='subcategory',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='products', to='products.subcategory'),
+            model_name="category",
+            name="image_alt",
+            field=models.CharField(default="Default alt text", max_length=255),
+        ),
+        migrations.AddField(
+            model_name="category",
+            name="image_src",
+            field=models.ImageField(default="default.jpg", upload_to="categories/"),
+        ),
+        migrations.CreateModel(
+            name="Subcategory",
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                (
+                    "image_src",
+                    models.ImageField(
+                        default="default.jpg", upload_to="subcategories/"
+                    ),
+                ),
+                (
+                    "image_alt",
+                    models.CharField(default="Default alt text", max_length=255),
+                ),
+                (
+                    "category",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="subcategories",
+                        to="products.category",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "Subcategory",
+                "verbose_name_plural": "Subcategories",
+            },
+        ),
+        migrations.AddField(
+            model_name="product",
+            name="subcategory",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="products",
+                to="products.subcategory",
+            ),
         ),
     ]

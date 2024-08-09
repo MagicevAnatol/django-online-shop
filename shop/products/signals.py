@@ -13,7 +13,9 @@ def move_cart_to_user(request, user, old_session_key):
         profile = user.profile
         user_cart, created = Cart.objects.get_or_create(profile=profile)
         for item in session_cart.items.all():
-            cart_item, created = CartItem.objects.get_or_create(cart=user_cart, product=item.product)
+            cart_item, created = CartItem.objects.get_or_create(
+                cart=user_cart, product=item.product
+            )
             if not created:
                 cart_item.count += item.count
             cart_item.save()

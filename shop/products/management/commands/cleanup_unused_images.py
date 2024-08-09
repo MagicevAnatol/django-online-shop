@@ -3,8 +3,9 @@ from django.core.management.base import BaseCommand
 from django.conf import settings
 from products.models import Image, Product
 
+
 class Command(BaseCommand):
-    help = 'Удаляет неиспользуемые изображения товаров'
+    help = "Удаляет неиспользуемые изображения товаров"
 
     def handle(self, *args, **kwargs):
         # Получаем все изображения из базы данных
@@ -18,7 +19,7 @@ class Command(BaseCommand):
 
         # Получаем все пути изображений на файловой системе
         media_root = settings.MEDIA_ROOT
-        product_images_dir = os.path.join(media_root, 'products')
+        product_images_dir = os.path.join(media_root, "products")
         all_file_paths = set()
 
         for root, _, files in os.walk(product_images_dir):
@@ -33,8 +34,10 @@ class Command(BaseCommand):
         for file_path in unused_images:
             try:
                 os.remove(file_path)
-                self.stdout.write(self.style.SUCCESS(f'Удалено: {file_path}'))
+                self.stdout.write(self.style.SUCCESS(f"Удалено: {file_path}"))
             except OSError as e:
-                self.stdout.write(self.style.ERROR(f'Ошибка при удалении {file_path}: {e}'))
+                self.stdout.write(
+                    self.style.ERROR(f"Ошибка при удалении {file_path}: {e}")
+                )
 
-        self.stdout.write(self.style.SUCCESS('Команда успешно выполнена'))
+        self.stdout.write(self.style.SUCCESS("Команда успешно выполнена"))

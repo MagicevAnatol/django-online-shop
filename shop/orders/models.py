@@ -4,7 +4,9 @@ from accounts.models import Profile
 
 
 class Order(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='orders')
+    profile = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name="orders"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     delivery_type = models.CharField(max_length=50)
     payment_type = models.CharField(max_length=50)
@@ -12,10 +14,12 @@ class Order(models.Model):
     status = models.CharField(max_length=50)
     city = models.CharField(max_length=100)
     address = models.CharField(max_length=255)
-    products = models.ManyToManyField(Product, through='OrderProduct', related_name='orders')
+    products = models.ManyToManyField(
+        Product, through="OrderProduct", related_name="orders"
+    )
 
     def __str__(self):
-        return f'Order {self.id} by {self.profile.full_name}'
+        return f"Order {self.id} by {self.profile.full_name}"
 
 
 class OrderProduct(models.Model):

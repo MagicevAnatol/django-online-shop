@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('accounts', '0002_rename_alt_profile_avatar_alt_and_more'),
+        ("accounts", "0002_rename_alt_profile_avatar_alt_and_more"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='profile',
-            options={'verbose_name': 'Profile', 'verbose_name_plural': 'Profiles'},
+            name="profile",
+            options={"verbose_name": "Profile", "verbose_name_plural": "Profiles"},
         ),
     ]

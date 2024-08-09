@@ -1,6 +1,17 @@
 from django.utils import timezone
 from rest_framework import serializers
-from .models import Category, Tag, Product, Review, Specification, Subcategory, Image, CartItem, Cart, Sale
+from .models import (
+    Category,
+    Tag,
+    Product,
+    Review,
+    Specification,
+    Subcategory,
+    Image,
+    CartItem,
+    Cart,
+    Sale,
+)
 
 
 class SubcategorySerializer(serializers.ModelSerializer):
@@ -8,7 +19,7 @@ class SubcategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Subcategory
-        fields = ['id', 'title', 'image']
+        fields = ["id", "title", "image"]
 
     def get_image(self, obj):
         return {
@@ -23,7 +34,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ['id', 'title', 'image', 'subcategories']
+        fields = ["id", "title", "image", "subcategories"]
 
     def get_image(self, obj):
         return {
@@ -35,16 +46,22 @@ class CategorySerializer(serializers.ModelSerializer):
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
-        fields = ('src', 'alt')
+        fields = ("src", "alt")
 
 
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
-        fields = ['author', 'email', 'text', 'rate', 'date', ]
+        fields = [
+            "author",
+            "email",
+            "text",
+            "rate",
+            "date",
+        ]
 
     def create(self, validated_data):
-        product_id = self.context['product_id']
+        product_id = self.context["product_id"]
         product = Product.objects.get(pk=product_id)
         return Review.objects.create(product=product, **validated_data)
 
@@ -52,62 +69,106 @@ class ReviewSerializer(serializers.ModelSerializer):
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = ['id', 'name']
+        fields = ["id", "name"]
 
 
 class SpecificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Specification
-        fields = ['name', 'value']
+        fields = ["name", "value"]
 
 
 class ProductDetailSerializer(serializers.ModelSerializer):
     images = ImageSerializer(many=True, read_only=True)
-    tags = serializers.SlugRelatedField(slug_field='name', many=True, queryset=Tag.objects.all())
+    tags = serializers.SlugRelatedField(
+        slug_field="name", many=True, queryset=Tag.objects.all()
+    )
     reviews = ReviewSerializer(many=True)
     specifications = SpecificationSerializer(many=True)
-    fullDescription = serializers.CharField(source='full_description')
-    freeDelivery = serializers.BooleanField(source='free_delivery')
+    fullDescription = serializers.CharField(source="full_description")
+    freeDelivery = serializers.BooleanField(source="free_delivery")
 
     class Meta:
         model = Product
-        fields = ['id', 'category', 'price', 'count', 'date', 'title', 'description', 'fullDescription',
-                  'freeDelivery', 'images', 'tags', 'reviews', 'specifications', 'rating']
+        fields = [
+            "id",
+            "category",
+            "price",
+            "count",
+            "date",
+            "title",
+            "description",
+            "fullDescription",
+            "freeDelivery",
+            "images",
+            "tags",
+            "reviews",
+            "specifications",
+            "rating",
+        ]
 
 
 class ProductSerializer(serializers.ModelSerializer):
     images = ImageSerializer(many=True, read_only=True)
     tags = TagSerializer(many=True)
-    reviews = serializers.IntegerField(source='reviews.count')
-    freeDelivery = serializers.BooleanField(source='free_delivery')
+    reviews = serializers.IntegerField(source="reviews.count")
+    freeDelivery = serializers.BooleanField(source="free_delivery")
 
     class Meta:
         model = Product
-        fields = ['id', 'category', 'price', 'count', 'date', 'title', 'description', 'freeDelivery',
-                  'images', 'tags', 'reviews', 'rating']
+        fields = [
+            "id",
+            "category",
+            "price",
+            "count",
+            "date",
+            "title",
+            "description",
+            "freeDelivery",
+            "images",
+            "tags",
+            "reviews",
+            "rating",
+        ]
 
 
 class BasketProductSerializer(serializers.ModelSerializer):
     price = serializers.SerializerMethodField()
     images = ImageSerializer(many=True, read_only=True)
     tags = TagSerializer(many=True)
-    reviews = serializers.IntegerField(source='reviews.count')
-    freeDelivery = serializers.BooleanField(source='free_delivery')
+    reviews = serializers.IntegerField(source="reviews.count")
+    freeDelivery = serializers.BooleanField(source="free_delivery")
     count = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
-        fields = ['id', 'category', 'price', 'count', 'date', 'title', 'description', 'freeDelivery',
-                  'images', 'tags', 'reviews', 'rating']
+        fields = [
+            "id",
+            "category",
+            "price",
+            "count",
+            "date",
+            "title",
+            "description",
+            "freeDelivery",
+            "images",
+            "tags",
+            "reviews",
+            "rating",
+        ]
 
     def get_count(self, obj):
-        request = self.context.get('request')
+        request = self.context.get("request")
         if request.user.is_authenticated:
             profile = request.user.profile
-            cart_item = CartItem.objects.filter(cart__profile=profile, product=obj).first()
+            cart_item = CartItem.objects.filter(
+                cart__profile=profile, product=obj
+            ).first()
         else:
             session_key = request.session.session_key
-            cart_item = CartItem.objects.filter(cart__session_key=session_key, product=obj).first()
+            cart_item = CartItem.objects.filter(
+                cart__session_key=session_key, product=obj
+            ).first()
 
         if cart_item:
             return cart_item.count
@@ -115,7 +176,9 @@ class BasketProductSerializer(serializers.ModelSerializer):
 
     def get_price(self, obj):
         today = timezone.now().date()
-        active_sale = Sale.objects.filter(product=obj, date_from__lte=today, date_to__gte=today).first()
+        active_sale = Sale.objects.filter(
+            product=obj, date_from__lte=today, date_to__gte=today
+        ).first()
         if active_sale:
             return active_sale.sale_price
         return obj.price
@@ -123,16 +186,16 @@ class BasketProductSerializer(serializers.ModelSerializer):
 
 class SaleProductSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source="product_id")
-    price = serializers.IntegerField(source='product.price', read_only=True)
-    salePrice = serializers.IntegerField(source='sale_price')
-    dateFrom = serializers.DateField(format='%m-%d', source='date_from')
-    dateTo = serializers.DateField(format='%m-%d', source='date_to')
-    title = serializers.CharField(source='product.title', read_only=True)
+    price = serializers.IntegerField(source="product.price", read_only=True)
+    salePrice = serializers.IntegerField(source="sale_price")
+    dateFrom = serializers.DateField(format="%m-%d", source="date_from")
+    dateTo = serializers.DateField(format="%m-%d", source="date_to")
+    title = serializers.CharField(source="product.title", read_only=True)
     images = serializers.SerializerMethodField()
 
     class Meta:
         model = Sale
-        fields = ['id', 'price', 'salePrice', 'dateFrom', 'dateTo', 'title', 'images']
+        fields = ["id", "price", "salePrice", "dateFrom", "dateTo", "title", "images"]
 
     def get_images(self, obj):
         images = Image.objects.filter(product_id=obj.product_id)
