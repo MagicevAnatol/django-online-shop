@@ -35,8 +35,9 @@ pip install dist/diploma-frontend-0.6.tar.gz
 
 ### 5. Запуск БД
 
-Запустите базу данных, в проекте используется PostgreSQL, для запуска контейнера воспользуйтесь созданным docker compose.
-Флаг -d предназначен для запуска в фоновом режиме.
+Запустите базу данных, в проекте используется PostgreSQL, для запуска контейнера воспользуйтесь созданным docker compose.  
+Флаг -d предназначен для запуска в фоновом режиме.  
+Укажите важные данные в файле .env.  
 ```sh 
 docker-compose up -d
 ```
@@ -79,7 +80,7 @@ python manage.py migrate
 python manage.py loaddata data.json
 ```
 
-Если необходимо использовать redis (для кэширования) использовать файл docker-compose.yml.
+Если необходимо использовать redis (для кэширования) использовать файл docker-compose.yml.  
 Раскомментируйте CACHES в settings.py и создание контейнера в docker compose.
 
 ```sh 
