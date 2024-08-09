@@ -3,6 +3,7 @@ import json
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.core.files.storage import default_storage
 from rest_framework import status, permissions
+from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import UserSignUpSerializer, UserSerializer
@@ -17,7 +18,7 @@ class SignUpView(APIView):
     """
     Представление для регистрации новых профилей и пользователей.
     """
-    def post(self, request):
+    def post(self, request: Request) -> Response:
         data_string = list(request.data.keys())[0]
         data_dict = json.loads(data_string)
         serializer = UserSignUpSerializer(data=data_dict)
@@ -41,7 +42,7 @@ class SignInView(APIView):
     """
     Представление для входа в аккаунт.
     """
-    def post(self, request):
+    def post(self, request: Request) -> Response:
         if request.data.get("username"):
             username = request.data.get("username")
             password = request.data.get("password")
@@ -61,7 +62,7 @@ class SignOutView(APIView):
     """
     Представление для выхода с аккаунта.
     """
-    def post(self, request):
+    def post(self, request: Request) -> Response:
         logout(request)
         return Response({"message": "User signed out successfully"}, status=status.HTTP_200_OK)
 
@@ -72,12 +73,12 @@ class UserProfileView(APIView):
     """
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request):
+    def get(self, request: Request) -> Response:
         user = request.user
         serializer = UserSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request):
+    def post(self, request: Request) -> Response:
         user = request.user
         data = request.data
 
@@ -107,7 +108,7 @@ class PasswordChangeView(APIView):
     """
     permission_classes = [permissions.IsAuthenticated]
 
-    def post(self, request):
+    def post(self, request: Request) -> Response:
         user = request.user
         current_password = request.data['currentPassword']
         new_password = request.data['newPassword']
@@ -125,7 +126,7 @@ class AvatarUpdateView(APIView):
     """
     permission_classes = [permissions.IsAuthenticated]
 
-    def post(self, request):
+    def post(self, request: Request) -> Response:
         user = request.user
         avatar = request.FILES.get('avatar')
         if avatar:

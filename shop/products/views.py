@@ -1,9 +1,8 @@
-from django.db.models import Q, Count, Sum
+from django.db.models import Q, Count, Sum, QuerySet
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, viewsets, status
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -22,14 +21,14 @@ class CatalogListView(generics.ListAPIView):
     filter_backends = (DjangoFilterBackend,)
     filterset_class = ProductFilter
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet[Product]:
         queryset = super().get_queryset()
         tags = self.request.query_params.getlist('tags[]')
         sort = self.request.query_params.get('sort', 'date')
         name = self.request.query_params.get('filter[name]')
         sort_type = self.request.query_params.get('sortType', 'dec')
-        min_price = self.request.query_params.get('filter[minPrice]', 0)
-        max_price = self.request.query_params.get('filter[maxPrice]', 50000)
+        min_price = float(self.request.query_params.get('filter[minPrice]', 0))
+        max_price = float(self.request.query_params.get('filter[maxPrice]', 50000))
         free_delivery = self.request.query_params.get('filter[freeDelivery]', 'false')
         available = self.request.query_params.get('filter[available]', 'false')
         category_id = self.request.query_params.get('category')
@@ -66,7 +65,7 @@ class CatalogListView(generics.ListAPIView):
 
         return queryset.order_by(sort)
 
-    def list(self, request, *args, **kwargs):
+    def list(self, request, *args, **kwargs) -> Response:
         limit = int(request.query_params.get('limit', 20))
         current_page = int(request.query_params.get('currentPage', 1))
         offset = (current_page - 1) * limit
@@ -101,7 +100,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.select_related('category', 'subcategory').all()
     serializer_class = ProductDetailSerializer
 
-    def retrieve(self, request, pk=None, **kwargs):
+    def retrieve(self, request, pk=None, **kwargs) -> Response:
         instance = self.get_object()
         instance.views += 1
         instance.save()
@@ -118,13 +117,13 @@ class ProductReviewView(APIView):
     Получение и создание отзывов для товара.
     """
 
-    def get(self, request, product_id):
+    def get(self, request, product_id: int) -> Response:
         product = Product.objects.get(pk=product_id)
         reviews = Review.objects.select_related('product').filter(product=product)
         serializer = ReviewSerializer(reviews, many=True)
         return Response(serializer.data)
 
-    def post(self, request, product_id):
+    def post(self, request, product_id: int) -> Response:
         serializer = ReviewSerializer(data=request.data, context={'product_id': product_id})
         if serializer.is_valid():
             serializer.save()
@@ -137,7 +136,7 @@ class PopularProductView(APIView):
     Получение популярных товаров (по количеству просмотров и рейтингу).
     """
 
-    def get(self, request):
+    def get(self, request) -> Response:
         popular_product = Product.objects.select_related('category', 'subcategory').prefetch_related('tags').order_by(
             "-views", "-rating")[:8]
         serializer = ProductSerializer(popular_product, many=True)
@@ -149,7 +148,7 @@ class LimitedProductView(APIView):
     Получение товаров с ограниченным количеством.
     """
 
-    def get(self, request):
+    def get(self, request) -> Response:
         limited_products = Product.objects.select_related('category', 'subcategory').prefetch_related('tags').filter(
             limited=1)[:16]
         serializer = ProductSerializer(limited_products, many=True)
@@ -161,7 +160,7 @@ class TagsProductView(APIView):
     Получение популярных тегов (по количеству просмотров товаров с этими тегами).
     """
 
-    def get(self, request):
+    def get(self, request) -> Response:
         tags = Tag.objects.annotate(total_views=Sum('product__views')).order_by('-total_views')[:10]
         serializer = TagSerializer(tags, many=True)
         return Response(serializer.data)
@@ -172,7 +171,7 @@ class BasketView(APIView):
     Управление корзиной пользователя (добавление, удаление товаров).
     """
 
-    def get_cart(self, request):
+    def get_cart(self, request) -> Cart:
         if request.user.is_authenticated:
             profile = request.user.profile
             cart = get_object_or_404(Cart, profile=profile)
@@ -184,13 +183,13 @@ class BasketView(APIView):
             cart, created = Cart.objects.get_or_create(session_key=session_key)
         return cart
 
-    def get(self, request):
+    def get(self, request) -> Response:
         cart = self.get_cart(request)
         products = [item.product for item in cart.items.all()]
         serializer = BasketProductSerializer(products, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request):
+    def post(self, request) -> Response:
         product_id = request.data.get('id')
         count = request.data.get('count', 1)
         product = get_object_or_404(Product, id=product_id)
@@ -208,7 +207,7 @@ class BasketView(APIView):
         serializer = BasketProductSerializer(products, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def delete(self, request):
+    def delete(self, request) -> Response:
         product_id = request.data.get('id')
         count = request.data.get('count', 1)
         product = get_object_or_404(Product, id=product_id)
@@ -232,7 +231,7 @@ class SaleProductView(APIView):
     Получение товаров со скидками с поддержкой пагинации.
     """
 
-    def get(self, request):
+    def get(self, request) -> Response:
         limit = 12
         current_page = int(request.query_params.get('currentPage', 1))
         offset = (current_page - 1) * limit
@@ -258,7 +257,7 @@ class BannersView(APIView):
     Получение последних добавленных товаров для баннеров.
     """
 
-    def get(self, request):
+    def get(self, request) -> Response:
         limited_products = Product.objects.select_related('category', 'subcategory').prefetch_related('tags').order_by(
             "-date")[:4]
         serializer = ProductSerializer(limited_products, many=True)
