@@ -128,8 +128,8 @@
     "views": 3,
     "rating": 5.0,
     "tags": [
-      5,
-      9
+      9,
+      5
     ]
   }
 },
@@ -151,8 +151,8 @@
     "views": 3,
     "rating": 5.0,
     "tags": [
-      7,
-      9
+      9,
+      7
     ]
   }
 },
@@ -377,8 +377,8 @@
     "views": 3,
     "rating": 0.0,
     "tags": [
-      3,
-      16
+      16,
+      3
     ]
   }
 },
@@ -400,8 +400,8 @@
     "views": 0,
     "rating": 0.0,
     "tags": [
-      3,
-      11
+      11,
+      3
     ]
   }
 },
@@ -423,8 +423,8 @@
     "views": 1,
     "rating": 0.0,
     "tags": [
-      3,
-      17
+      17,
+      3
     ]
   }
 },
@@ -443,7 +443,7 @@
     "free_delivery": true,
     "limited": false,
     "available": true,
-    "views": 1,
+    "views": 2,
     "rating": 0.0,
     "tags": [
       2,

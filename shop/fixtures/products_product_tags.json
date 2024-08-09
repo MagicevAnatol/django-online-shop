@@ -11,13 +11,21 @@
   "model": "products.product_tags",
   "pk": 2,
   "fields": {
+    "product": 1,
+    "tag": 6
+  }
+},
+{
+  "model": "products.product_tags",
+  "pk": 3,
+  "fields": {
     "product": 2,
     "tag": 1
   }
 },
 {
   "model": "products.product_tags",
-  "pk": 3,
+  "pk": 4,
   "fields": {
     "product": 3,
     "tag": 3
@@ -25,7 +33,7 @@
 },
 {
   "model": "products.product_tags",
-  "pk": 4,
+  "pk": 5,
   "fields": {
     "product": 4,
     "tag": 3
@@ -33,7 +41,7 @@
 },
 {
   "model": "products.product_tags",
-  "pk": 5,
+  "pk": 6,
   "fields": {
     "product": 5,
     "tag": 3
@@ -41,7 +49,15 @@
 },
 {
   "model": "products.product_tags",
-  "pk": 6,
+  "pk": 7,
+  "fields": {
+    "product": 6,
+    "tag": 9
+  }
+},
+{
+  "model": "products.product_tags",
+  "pk": 8,
   "fields": {
     "product": 6,
     "tag": 5
@@ -49,15 +65,15 @@
 },
 {
   "model": "products.product_tags",
-  "pk": 7,
+  "pk": 9,
   "fields": {
-    "product": 1,
-    "tag": 6
+    "product": 7,
+    "tag": 9
   }
 },
 {
   "model": "products.product_tags",
-  "pk": 8,
+  "pk": 10,
   "fields": {
     "product": 7,
     "tag": 7
@@ -65,7 +81,7 @@
 },
 {
   "model": "products.product_tags",
-  "pk": 9,
+  "pk": 11,
   "fields": {
     "product": 8,
     "tag": 8
@@ -73,25 +89,9 @@
 },
 {
   "model": "products.product_tags",
-  "pk": 10,
-  "fields": {
-    "product": 8,
-    "tag": 9
-  }
-},
-{
-  "model": "products.product_tags",
-  "pk": 11,
-  "fields": {
-    "product": 7,
-    "tag": 9
-  }
-},
-{
-  "model": "products.product_tags",
   "pk": 12,
   "fields": {
-    "product": 6,
+    "product": 8,
     "tag": 9
   }
 },
@@ -283,16 +283,16 @@
   "model": "products.product_tags",
   "pk": 36,
   "fields": {
-    "product": 23,
-    "tag": 20
+    "product": 22,
+    "tag": 21
   }
 },
 {
   "model": "products.product_tags",
   "pk": 37,
   "fields": {
-    "product": 24,
-    "tag": 21
+    "product": 23,
+    "tag": 20
   }
 },
 {
@@ -307,7 +307,7 @@
   "model": "products.product_tags",
   "pk": 39,
   "fields": {
-    "product": 22,
+    "product": 24,
     "tag": 21
   }
 },

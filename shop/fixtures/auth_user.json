@@ -3,8 +3,8 @@
   "model": "auth.user",
   "pk": 1,
   "fields": {
-    "password": "pbkdf2_sha256$720000$dFM5gQSntNFcxBQxZjbe4h$3j222CylU9KtMA0jdmTvm9wXp73No6U/ybPApFaaOaM=",
-    "last_login": "2024-08-08T21:48:42.931Z",
+    "password": "pbkdf2_sha256$870000$D3JzalGuwoccJSivZIjZNq$i8/vjExMl8txewKmsSXQevn41u/zvn0vCmNKSEE0ISw=",
+    "last_login": "2024-08-09T20:33:18.671Z",
     "is_superuser": true,
     "username": "admin",
     "first_name": "",
