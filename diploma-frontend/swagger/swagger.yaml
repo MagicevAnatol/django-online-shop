@@ -48,6 +48,12 @@ paths:
           required: true
           schema:
             type: string
+        - name: email
+          in: query
+          description: email
+          required: true
+          schema:
+            type: string
         - name: username
           in: query
           description: username
